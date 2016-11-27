@@ -1,61 +1,103 @@
 package game;
 
+/***************************************************
+ * Class for Queen Chess Piece.
+ *
+ * @author Nate Benson, Jake Young, Kaye Suarez
+ * @version 2.0
+ ***************************************************/
+
 public class Queen extends ChessPiece {
 	
+	/** Player of piece. */
 	private Player owner;
 
-	protected Queen(Player player) {
+	
+	/********************************
+	 * Sets owner of piece.
+	 * @param player owner of piece.
+	 ********************************/
+	protected Queen(final Player player) {
 		super(player);
 		this.owner = player;
 	}
 
-	public String type(){
+	
+	/*************************
+	 * Returns type of piece.
+	 * @return type
+	 *************************/
+	public final String type() {
 		return "Queen";
 	}
 	
-	public Player player() {
+	/**************************
+	 * Return owner of piece.
+	 * @return owner
+	 **************************/
+	public final Player player() {
 		return owner;
 	}
 	
-	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		if(super.isValidMove(move, board) == false) {
+	
+	/*******************************************
+	 * Returns valid move for Queen.
+	 * @param move given move
+	 * @param board current board
+	 * @return true if valid, false if not
+	 ******************************************/
+	public final boolean isValidMove(
+				final Move move, final IChessPiece[][] board) {
+		
+		if (!(super.isValidMove(move, board))) {
 			return false;
 		}
-		if(!(Math.abs(move.fromRow - move.toRow) 
+		if (!(Math.abs(move.fromRow - move.toRow) 
 				== Math.abs(move.fromColumn - move.toColumn))) {
-			if(!(move.fromRow == move.toRow 
+			if (!(move.fromRow == move.toRow 
 					|| move.fromColumn == move.toColumn)) {
 				return false;
 			}
 		}
-		if(move.toRow > move.fromRow) {
-			//southeast
-			if(move.toColumn > move.fromColumn) {
-				for(int j = move.fromRow + 1, i = move.fromColumn + 1; j != move.toRow && i != move.toColumn; j++, i++) {
-					if(board[j][i] != null) {
+		if (move.toRow > move.fromRow) {
+			
+			//SOUTHEAST
+			if (move.toColumn > move.fromColumn) {
+				for (int j = move.fromRow + 1, 
+						i = move.fromColumn + 1; 
+						j != move.toRow && i != move.toColumn; j++, i++) {
+					
+					if (board[j][i] != null) {
 						return false;
 					}
 				}
 			}
-			//south
-			if(move.toColumn==move.fromColumn) {
-				for(int i = move.fromRow + 1; i != move.toRow; i++) {
-					if(board[i][move.fromColumn] != null) {
+			
+			//SOUTH
+			if (move.toColumn == move.fromColumn) {
+				for (int i = move.fromRow + 1; i != move.toRow; i++) {
+					
+					if (board[i][move.fromColumn] != null) {
 						return false;
 					}
 				}
 			}
-			//southwest
-			if(move.toColumn < move.fromColumn) {
-				for(int j = move.fromRow + 1, i = move.fromColumn - 1; j != move.toRow && i != move.toColumn; j++, i--) {
-					if(board[j][i] != null) {
+			
+			//SOUTHWEST
+			if (move.toColumn < move.fromColumn) {
+				for (int j = move.fromRow + 1, 
+						i = move.fromColumn - 1; 
+						j != move.toRow && i != move.toColumn; j++, i--) {
+					
+					if (board[j][i] != null) {
 						return false;
 					}
 				}
 			}
 		}
-		if(move.toRow < move.fromRow) {
-			//northeast
+		if (move.toRow < move.fromRow) {
+			
+			//NORTHWEST
 			if(move.toColumn > move.fromColumn) {
 				for(int j = move.fromRow - 1, i = move.fromColumn + 1; j != move.toRow && i != move.toColumn; j--, i++) {
 					if(board[j][i] != null) {
