@@ -1,39 +1,73 @@
 package game;
 
+
+/***************************************************
+ * Class for King Chess Piece.
+ *
+ * @author Nate Benson, Jake Young, Kaye Suarez
+ * @version 2.0
+ ***************************************************/
 public class Knight extends ChessPiece {
 
-	protected Knight(Player player) {
+	
+	/********************************
+	 * Create Knight piece.
+	 * @param player owner of piece.
+	 ********************************/
+	protected Knight(final Player player) {
 		super(player);
 		this.owner = player;
 	}
 
+	/** Owner of piece. */
 	private Player owner;
 	
 	
-	
-	public String type(){
+	/*************************
+	 * Returns type of piece.
+	 * @return type
+	 *************************/
+	public final String type() {
 		return "Knight";
 	}
 	
-	public Player player() {
+	
+	/**************************
+	 * Return owner of piece.
+	 * @return owner
+	 **************************/
+	public final Player player() {
 		return owner;
 	}
 	
-	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		if(super.isValidMove(move, board)) {
+	
+	/*******************************************
+	 * Returns valid move for King.
+	 * @param move given move
+	 * @param board current board
+	 * @return true if valid, false if not
+	 ******************************************/
+	public final boolean isValidMove(final Move move, 
+							final IChessPiece[][] board) {
+		
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
+		
+		if (super.isValidMove(move, board)) {
 			//checks that the move is either two(2) rows and one(1) column or 
 			//two(2) columns and one(1) row
-			if( ((Math.abs(move.fromRow - move.toRow) == 2) 
-					&& (Math.abs(move.fromColumn - move.toColumn) == 1)) 
-					|| ((Math.abs(move.fromColumn - move.toColumn) == 2) 
-							&& (Math.abs(move.fromRow - move.toRow) == 1))){
+			if (((Math.abs(row - newR) == 2) && (Math.abs(col - newC) == 1)) 
+							|| ((Math.abs(col - newC) == 2) 
+							&& (Math.abs(row - newR) == 1))) {
 				return true;
 			}
 			
-		}
-		else {
+		} else {
 			return false;
 		}
+		
 		return false;
 	}
 }

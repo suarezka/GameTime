@@ -50,21 +50,27 @@ public class Bishop extends ChessPiece {
 	public final boolean isValidMove(final Move move, 
 								final IChessPiece[][] board) {
 		
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
+		
+		
 		if (!(super.isValidMove(move, board))) {
 			return false;
 		}
 		
-		if (!(Math.abs(move.fromRow - move.toRow)
-				== Math.abs(move.fromColumn - move.toColumn))) {
+		if (!(Math.abs(row - newR)
+				== Math.abs(col - newC))) {
 			return false;
 		}
 		
-		if (move.toRow > move.fromRow) {
+		if (newR > row) {
 			//top right
-			if (move.toColumn > move.fromColumn) {
-				for (int j = move.fromRow + 1, 
-						i = move.fromColumn + 1; 
-						j != move.toRow && i != move.toColumn; j++, i++) {
+			if (newC > col) {
+				for (int j = row + 1, 
+						i = col + 1; 
+						j != newR && i != newC; j++, i++) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -72,10 +78,10 @@ public class Bishop extends ChessPiece {
 				}
 			}
 			//bottom right
-			if (move.toColumn < move.fromColumn) {
-				for (int j = move.fromRow + 1, 
-						i = move.fromColumn - 1; 
-						j != move.toRow && i != move.toColumn; j++, i--) {
+			if (newC < col) {
+				for (int j = row + 1, 
+						i = col - 1; 
+						j != newR && i != newC; j++, i--) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -83,12 +89,12 @@ public class Bishop extends ChessPiece {
 				}
 			}
 		}
-		if (move.toRow < move.fromRow) {
+		if (newR < row) {
 			//top left
-			if (move.toColumn > move.fromColumn) {
-				for (int j = move.fromRow - 1, 
-						i = move.fromColumn + 1;
-						j != move.toRow && i != move.toColumn; j--, i++) {
+			if (newC > col) {
+				for (int j = row - 1, 
+						i = col + 1;
+						j != newR && i != newC; j--, i++) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -96,10 +102,10 @@ public class Bishop extends ChessPiece {
 				}
 			}
 			//bottom left
-			if (move.toColumn < move.fromColumn) {
-				for (int j = move.fromRow - 1, 
-						i = move.fromColumn - 1; 
-						j != move.toRow && i != move.toColumn; j--, i--) {
+			if (newC < col) {
+				for (int j = row - 1, 
+						i = col - 1; 
+						j != newR && i != newC; j--, i--) {
 					
 					if (board[j][i] != null) {
 						return false;

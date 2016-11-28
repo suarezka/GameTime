@@ -52,20 +52,26 @@ public class Queen extends ChessPiece {
 		if (!(super.isValidMove(move, board))) {
 			return false;
 		}
-		if (!(Math.abs(move.fromRow - move.toRow) 
-				== Math.abs(move.fromColumn - move.toColumn))) {
-			if (!(move.fromRow == move.toRow 
-					|| move.fromColumn == move.toColumn)) {
+		
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
+		
+		if (!(Math.abs(row - newR) 
+				== Math.abs(col - newC))) {
+			if (!(row == newR 
+					|| col == newC)) {
 				return false;
 			}
 		}
-		if (move.toRow > move.fromRow) {
+		
+		if (newR > row) {
 			
 			//SOUTHEAST
-			if (move.toColumn > move.fromColumn) {
-				for (int j = move.fromRow + 1, 
-						i = move.fromColumn + 1; 
-						j != move.toRow && i != move.toColumn; j++, i++) {
+			if (newC > col) {
+				for (int j = row + 1, i = col + 1; 
+						j != newR && i != newC; j++, i++) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -74,20 +80,20 @@ public class Queen extends ChessPiece {
 			}
 			
 			//SOUTH
-			if (move.toColumn == move.fromColumn) {
-				for (int i = move.fromRow + 1; i != move.toRow; i++) {
+			if (newC == col) {
+				for (int i = row + 1; i != newR; i++) {
 					
-					if (board[i][move.fromColumn] != null) {
+					if (board[i][col] != null) {
 						return false;
 					}
 				}
 			}
 			
 			//SOUTHWEST
-			if (move.toColumn < move.fromColumn) {
-				for (int j = move.fromRow + 1, 
-						i = move.fromColumn - 1; 
-						j != move.toRow && i != move.toColumn; j++, i--) {
+			if (newC < col) {
+				for (int j = row + 1, 
+						i = col - 1; 
+						j != newR && i != newC; j++, i--) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -95,13 +101,13 @@ public class Queen extends ChessPiece {
 				}
 			}
 		}
-		if (move.toRow < move.fromRow) {
+		if (newR < row) {
 			
 			//NORTHWEST
-			if (move.toColumn > move.fromColumn) {
-				for (int j = move.fromRow - 1, 
-						i = move.fromColumn + 1; 
-						j != move.toRow && i != move.toColumn; j--, i++) {
+			if (newC > col) {
+				for (int j = row - 1, 
+						i = col + 1; 
+						j != newR && i != newC; j--, i++) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -110,22 +116,22 @@ public class Queen extends ChessPiece {
 			}
 			
 			//NORTH
-			if (move.toColumn == move.fromColumn) {
+			if (newC == col) {
 				
-				for (int i = move.toRow + 1; 
-						i != move.fromRow; i++) {
+				for (int i = newR + 1; 
+						i != row; i++) {
 					
-					if (board[i][move.fromColumn] != null) {
+					if (board[i][col] != null) {
 						return false;
 					}
 				}
 			}
 			
 			//NORTHWEST
-			if (move.toColumn < move.fromColumn) {
-				for (int j = move.fromRow - 1, 
-						i = move.fromColumn - 1; 
-						j != move.toRow && i != move.toColumn; j--, i--) {
+			if (newC < col) {
+				for (int j = row - 1, 
+						i = col - 1; 
+						j != newR && i != newC; j--, i--) {
 					
 					if (board[j][i] != null) {
 						return false;
@@ -134,21 +140,21 @@ public class Queen extends ChessPiece {
 			}
 		}
 		
-		if (move.toRow == move.fromRow) {
+		if (newR == row) {
 			
 			//EAST
-			if (move.toColumn > move.fromColumn) {
-				for (int i = move.fromColumn + 1; i != move.toColumn; i++) {
-					if (board[move.fromRow][i] != null) {
+			if (newC > col) {
+				for (int i = col + 1; i != newC; i++) {
+					if (board[row][i] != null) {
 						return false;
 					}
 				}
 			}
 			
 			//WEST
-			if (move.toColumn < move.fromColumn) {
-				for (int i = move.toColumn + 1; i != move.fromColumn; i++) {
-					if (board[move.fromRow][i] != null) {
+			if (newC < col) {
+				for (int i = newC + 1; i != col; i++) {
+					if (board[row][i] != null) {
 						return false;
 					}
 				}

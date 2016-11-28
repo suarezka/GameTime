@@ -50,22 +50,23 @@ public class Pawn extends ChessPiece {
 	 ******************************************/
 	public final boolean isValidMove(
 			final Move move, final IChessPiece[][] board) {
+		
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
 
 		if (super.isValidMove(move, board)) {
-			if (board[move.fromRow][move.fromColumn].player() == Player.BLACK) {
-				if (move.fromRow < 7) {
+			if (board[row][col].player() == Player.BLACK) {
+				if (row < 7) {
 					//check if blocked
-					if (board[move.fromRow + 1][move.fromColumn] != null) {
+					if (board[row + 1][col] != null) {
 						//check for attack
-						if (move.toRow - move.fromRow == 1 
-								&& Math.abs(move.fromColumn 
-										- move.toColumn) == 1) {
+						if (newR - row == 1 && Math.abs(col - newC) == 1) {
 
 							//check for enemy piece
-							if (board[move.toRow][move.toColumn] != null 
-									&& board[move.toRow]
-											[move.toColumn].player() 
-											== Player.WHITE) {
+							if (board[newR][newC] != null && board[newR]
+											[newC].player() == Player.WHITE) {
 
 								return true;
 							}
@@ -74,19 +75,16 @@ public class Pawn extends ChessPiece {
 						return false;
 					} else if (hasMoved) {
 						//black normal move
-						if ((move.toRow - move.fromRow == 1)
-								&& move.fromColumn == move.toColumn) {
+						if ((newR - row == 1) && col == newC) {
 							return true;
 
 							//black attack after hasMoved	
-						} else if (move.toRow - move.fromRow == 1 
-								&& Math.abs(move.toColumn 
-										- move.fromColumn) == 1) {
+						} else if (newR - row == 1 
+								&& Math.abs(newC 
+										- col) == 1) {
 
-							if (board[move.toRow][move.toColumn] != null 
-									&& board[move.toRow]
-											[move.toColumn].player() 
-											== Player.WHITE) {
+							if (board[newR][newC] != null && board[newR]
+									 		[newC].player() == Player.WHITE) {
 								return true;
 							}
 							return false;
@@ -95,22 +93,19 @@ public class Pawn extends ChessPiece {
 
 					} else {
 						//black first move
-						if ((move.toRow - move.fromRow == 2 
-								|| move.toRow - move.fromRow == 1) 
-								&& move.toColumn == move.fromColumn) {
+						if ((newR - row == 2 || newR - row == 1) 
+											 && newC == col) {
+							
 							//hasMoved = true;
 							return true;
 
 
 							//black attack first move
-						} else if (move.toRow - move.fromRow == 1 
-								&& Math.abs(move.toColumn 
-										- move.fromColumn) == 1) {
+						} else if (newR - row == 1 
+									&& Math.abs(newC - col) == 1) {
 
-							if (board[move.toRow][move.toColumn] != null 
-									&& board[move.toRow]
-											[move.toColumn].player() 
-											== Player.WHITE) {
+							if (board[newR][newC] != null && board[newR]
+											[newC].player() == Player.WHITE) {
 								//hasMoved = true;
 								return true;
 							}
@@ -119,19 +114,16 @@ public class Pawn extends ChessPiece {
 						return false;
 					}
 				} else {
-					if (move.fromRow > 0) {
+					if (row > 0) {
 						//check if blocked
-						if (board[move.fromRow - 1][move.fromColumn] != null) {
+						if (board[row - 1][col] != null) {
 							//check for attack
-							if (move.fromRow - move.toRow == 1 
-									&& Math.abs(move.fromColumn 
-											- move.toColumn) == 1) {
+							if (row - newR == 1 
+									&& Math.abs(col - newC) == 1) {
 
 								//check for enemy piece
-								if (board[move.toRow][move.toColumn] != null 
-										&& board[move.toRow]
-												[move.toColumn].player() 
-												== Player.BLACK) {
+								if (board[newR][newC] != null && board[newR]
+											[newC].player() == Player.BLACK) {
 									
 									return true;
 								}
@@ -142,21 +134,17 @@ public class Pawn extends ChessPiece {
 						} else if (hasMoved) {
 							
 							//white normal move
-							if ((move.fromRow - move.toRow == 1)
-									&& move.fromColumn == move.toColumn) {
+							if ((row - newR == 1) && col == newC) {
 								return true;
 								
 								//white attack
-							} else if (move.fromRow - move.toRow == 1 
-									&& Math.abs(move.fromColumn 
-												- move.toColumn) == 1) {
+							} else if (row - newR == 1 
+									&& Math.abs(col - newC) == 1) {
 								
 								 //TODO: ADD STATEMENT??
 							}
-								if (board[move.toRow][move.toColumn] != null 
-										&& board[move.toRow]
-												[move.toColumn].player() 
-												== Player.BLACK) {
+								if (board[newR][newC] != null && board[newR]
+											[newC].player() == Player.BLACK) {
 									return true;
 								}
 								return false;
@@ -164,21 +152,17 @@ public class Pawn extends ChessPiece {
 							return false;
 						} else {
 							//white first move
-							if ((move.fromRow - move.toRow == 2 
-									|| move.fromRow - move.toRow == 1) 
-									&& move.toColumn == move.fromColumn) {
+							if ((row - newR == 2 || row - newR == 1) 
+											&& newC == col) {
 								
 								//hasMoved = true;
 								return true;
 								
-							} else if (move.fromRow - move.toRow == 1 
-										&& Math.abs(move.fromColumn 
-												- move.toColumn) == 1) {
+							} else if (row - newR == 1 
+										&& Math.abs(col - newC) == 1) {
 								
-								if (board[move.toRow][move.toColumn] != null 
-										&& board[move.toRow]
-												[move.toColumn].player() 
-												== Player.BLACK) {
+								if (board[newR][newC] != null && board[newR]
+											[newC].player() == Player.BLACK) {
 									
 									//hasMoved = true;
 									return true;

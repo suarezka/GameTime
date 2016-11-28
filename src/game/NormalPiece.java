@@ -39,28 +39,35 @@ public class NormalPiece extends GamePiece {
 	public final boolean isValidMove(
 			final Move move, final IGamePiece[][] board) {
 
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
+		
 		//top left is 0-0 and a GRAY Piece
-		if (board[move.fromRow][move.fromColumn].player() == Player.GRAY) {
-			if ((move.fromRow != move.toRow) 
-					&& (move.fromColumn != move.toColumn)) {
-				if (move.toRow - move.fromRow == 1) {
-					if (Math.abs(move.fromColumn - move.toColumn) == 1) {
+		if (board[row][col].player() == Player.GRAY) {
+			
+			if ((row != newR) && (col != newC)) {
+				if (newR - row == 1) {
+					if (Math.abs(col - newC) == 1) {
 						return true;
 					}
 				}
-				if ((move.toRow == move.fromRow + 2) 
-						&& (move.toColumn == move.fromColumn - 2)) {
-					if (board[move.fromRow + 1][move.fromColumn - 1] != null
-							&& board[move.fromRow + 1][move.fromColumn - 1]
-									.player() == Player.RED) {
+				
+				if ((newR == row + 2) && (newC == col - 2)) {
+					if (board[row + 1][col - 1] != null 
+								&& board[row + 1][col - 1].player() 
+								== Player.RED) {
+						
 						return true;
 					}
 				}
-				if ((move.toRow == move.fromRow + 2)
-						&& (move.toColumn == move.fromColumn + 2)) {
-					if (board[move.fromRow + 1][move.fromColumn + 1] != null
-							&& board[move.fromRow + 1][move.fromColumn + 1]
-									.player() == Player.RED) {
+				if ((newR == row + 2)
+						&& (newC == col + 2)) {
+					if (board[row + 1][col + 1] != null
+							&& board[row + 1][col + 1].player()
+							== Player.RED) {
+						
 						return true;
 					}
 				}
@@ -68,27 +75,28 @@ public class NormalPiece extends GamePiece {
 			return false;
 		}
 		
-		if (board[move.fromRow][move.fromColumn].player() == Player.RED) {
-			if (move.fromRow != move.toRow 
-					&& move.fromColumn != move.toColumn) {
-				if (move.toRow - move.fromRow == -1) {
-					if (Math.abs(move.fromColumn - move.toColumn) == 1) {
+		if (board[row][col].player() == Player.RED) {
+			if (row != newR && col != newC) {
+				if (newR - row == -1) {
+					if (Math.abs(col - newC) == 1) {
 						return true;
 					}
 				}
-				if (move.fromRow == move.toRow + 2 
-						&& (move.toColumn == move.fromColumn - 2)) {
-					if (board[move.fromRow - 1][move.fromColumn - 1] != null
-							&& board[move.fromRow - 1][move.fromColumn - 1]
-									.player() == Player.GRAY) {
+				
+				if (row == newR + 2 && (newC == col - 2)) {
+					if (board[row - 1][col - 1] != null
+							&& board[row - 1][col - 1].player() 
+							== Player.GRAY) {
+						
 						return true;
 					}
 				}
-				if (move.fromRow == move.toRow + 2
-						&& (move.toColumn == move.fromColumn + 2)) {
-					if (board[move.fromRow - 1][move.fromColumn + 1] != null
-							&& board[move.fromRow - 1][move.fromColumn + 1]
-									.player() == Player.GRAY) {
+				
+				if (row == newR + 2 && (newC == col + 2)) {
+					if (board[row - 1][col + 1] != null
+							&& board[row - 1][col + 1].player() 
+							== Player.GRAY) {
+						
 						return true;
 					}
 				}

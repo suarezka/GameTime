@@ -320,22 +320,33 @@ public class ChessModel implements IChessModel {
 //		}
 //	}
 	
+	/********************************
+	 * Handles Promotion of pieces.
+	 ********************************/
 	public void promotion() {
-		for(int a = 0; a < 8; a++) {
-			if(currentPlayer() == Player.WHITE) {
-				if(pieceAt(0, a) != null && pieceAt(0, a).type() == "Pawn" 
+		
+		for (int a = 0; a < 8; a++) {
+			if (currentPlayer() == Player.WHITE) {
+				if (pieceAt(0, a) != null && pieceAt(0, a).type() == "Pawn" 
 						&& pieceAt(0, a).player() == currentPlayer()) {
-					if(takenWhiteBishop == 0 && takenWhiteKnight == 0 &&
-							takenWhiteRook == 0) {
-						JOptionPane.showMessageDialog(null, "You have not lost any pieces \n"
+					if (takenWhiteBishop == 0 && takenWhiteKnight == 0 
+								&& takenWhiteRook == 0) {
+						
+						JOptionPane.showMessageDialog(null, 
+								"You have not lost any pieces \n"
 								+ "You will be given a Queen");
 						board[0][a] = new Queen(Player.WHITE);
 					}
-					if(takenWhiteBishop != 0) {
-						if(takenWhiteKnight != 0) {
-							if(takenWhiteRook != 0) {
+					if (takenWhiteBishop != 0) {
+						if (takenWhiteKnight != 0) {
+							if (takenWhiteRook != 0) {
+								
 								Object[] options = {"Bishop", "Knight", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
+								int n = JOptionPane.showOptionDialog(null, 
+										"Please select a piece.", "Promotion", 
+										JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, 
+										blackPawn, options, options[0]);
+								
 								if(n == 0) {
 									board[0][a] = new Bishop(Player.WHITE);
 									takenWhiteBishop--;
@@ -421,25 +432,25 @@ public class ChessModel implements IChessModel {
 					}
 				}
 			}
-			if(currentPlayer() == Player.BLACK) {
-				if(pieceAt(7, a) != null && pieceAt(7, a).type() == "Pawn" 
+			if (currentPlayer() == Player.BLACK) {
+				if (pieceAt(7, a) != null && pieceAt(7, a).type() == "Pawn" 
 						&& pieceAt(7, a).player() == currentPlayer()) {
-					if(takenBlackBishop == 0 && takenBlackKnight == 0 &&
+					if (takenBlackBishop == 0 && takenBlackKnight == 0 &&
 							takenBlackRook == 0) {
 						JOptionPane.showMessageDialog(null, "You have not lost any pieces \n"
 								+ "You will be given a Queen");
 						board[7][a] = new Queen(Player.BLACK);
 					}
-					if(takenBlackBishop != 0) {
-						if(takenBlackKnight != 0) {
-							if(takenBlackRook != 0) {
+					if (takenBlackBishop != 0) {
+						if (takenBlackKnight != 0) {
+							if (takenBlackRook != 0) {
 								Object[] options = {"Bishop", "Knight", "Rook"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Bishop(Player.BLACK);
 									takenBlackBishop--;
 								}
-								if(n == 1) {
+								if (n == 1) {
 									board[7][a] = new Knight(Player.BLACK);
 									takenBlackKnight--;
 								}
@@ -447,71 +458,67 @@ public class ChessModel implements IChessModel {
 									board[7][a] = new Rook(Player.BLACK);
 									takenBlackRook--;
 								}
-							}
-							else {
+								
+							} else {
 								Object[] options = {"Bishop", "Knight"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Bishop(Player.BLACK);
 									takenBlackBishop--;
 								}
-								if(n == 1) {
+								if (n == 1) {
 									board[7][a] = new Knight(Player.BLACK);
 									takenBlackKnight--;
 								}
 							}
-						}
-						else{
-							if(takenBlackRook != 0) {
+							
+						} else {
+							if (takenBlackRook != 0) {
 								Object[] options = {"Bishop", "Rook"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Bishop(Player.BLACK);
 									takenBlackBishop--;
 								}
-								if(n == 1) {
+								if (n == 1) {
 									board[7][a] = new Rook(Player.BLACK);
 									takenBlackRook--;
 								}
-							}
-							else {
+							} else {
 								Object[] options = {"Bishop"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Bishop(Player.BLACK);
 									takenBlackBishop--;
 								}
 							}
 						}
-					}
-					else {
-						if(takenBlackKnight != 0) {
-							if(takenBlackRook != 0) {
+					} else {
+						if (takenBlackKnight != 0) {
+							if (takenBlackRook != 0) {
 								Object[] options = {"Knight", "Rook"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Knight(Player.BLACK);
 									takenBlackKnight--;
 								}
-								if(n == 1) {
+								if (n == 1) {
 									board[7][a] = new Rook(Player.BLACK);
 									takenBlackRook--;
 								}
-							}
-							else {
+							} else {
 								Object[] options = {"Knight"};
 								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Knight(Player.BLACK);
 									takenBlackKnight--;
 								}
 							}
-						}
-						else {
-							if(takenBlackRook != 0) {
+						} else {
+							if (takenBlackRook != 0) {
 							Object[] options = {"Rook"};
 							int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
+								if (n == 0) {
 									board[7][a] = new Rook(Player.BLACK);
 									takenBlackRook--;
 								}

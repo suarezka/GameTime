@@ -51,28 +51,30 @@ public class Rook extends ChessPiece {
 	 ******************************************/
 	public final boolean isValidMove(
 			final Move move, final IChessPiece[][] board) {
+		
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
 
 		/*holds a step value*/
 		int stepValue = 0;	
 		//check the super 
 		if (super.isValidMove(move, board)) {
 			//check that its a valid Rook move
-			if (!(move.fromRow == move.toRow 
-					|| move.fromColumn == move.toColumn)) {
+			if (!(row == newR || col == newC)) {
 				return false;
 				
 			} else {
 				//check that to move is along a row
-				if (move.toRow - move.fromRow != 0) {
-					stepValue = 
-							(-(move.fromRow - move.toRow)
-									/ Math.abs(move.fromRow - move.toRow));
+				if (newR - row != 0) {
+					stepValue = (-(row - newR) / Math.abs(row - newR));
 					
 					
-					for (int i = (move.fromRow + stepValue); 
-								i != move.toRow; i = i + stepValue) {
+					for (int i = (row + stepValue); 
+							 i != newR; i = i + stepValue) {
 						
-						if (board[i][move.fromColumn] != null) {
+						if (board[i][col] != null) {
 							return false;
 						}
 					}
@@ -81,12 +83,12 @@ public class Rook extends ChessPiece {
 					
 				} else {
 					stepValue = 
-							(-(move.fromColumn - move.toColumn) 
-								/ Math.abs(move.fromColumn - move.toColumn));
+							(-(col - newC) / Math.abs(col - newC));
 					
-					for (int i = (move.fromColumn + stepValue); 
-								i != move.toColumn; i = i + stepValue) {
-						if (board[move.fromRow][i] != null) {
+					for (int i = (col + stepValue); 
+								i != newC; i = i + stepValue) {
+						
+						if (board[row][i] != null) {
 							return false;
 						}
 					}

@@ -36,28 +36,33 @@ public class Kings extends GamePiece {
 	public final boolean isValidMove(
 			             final Move move, final IGamePiece[][] board) {
 		
-		if (move.fromRow != move.toRow && move.fromColumn != move.toColumn) {
-			if (Math.abs(move.fromRow - move.toRow) == 1) {
-				if (Math.abs(move.fromColumn - move.toColumn) == 1) {
+		int row = move.getCurrentRow();
+		int col = move.getCurrentCol();
+		int newR = move.getNewRow();
+		int newC = move.getNewCol();
+		
+		if (row != newR && col != newC) {
+			if (Math.abs(row - newR) == 1) {
+				if (Math.abs(col - newC) == 1) {
 					return true;
 				}
 			}
 			//Jumps
 			//up
-			if (move.toRow - move.fromRow == 2) {
+			if (newR - row == 2) {
 				//right
-				if (move.toColumn - move.fromColumn == 2) {
-					if (board[move.fromRow + 1][move.fromColumn + 1] != null) {
-						if (board[move.fromRow + 1][move.fromColumn + 1]
+				if (newC - col == 2) {
+					if (board[row + 1][col + 1] != null) {
+						if (board[row + 1][col + 1]
 								.player() != owner) {
 							return true;
 						}
 					}
 				}
 				//left
-				if (move.fromColumn - move.toColumn == 2) {
-					if (board[move.fromRow + 1][move.fromColumn - 1] != null) {
-						if (board[move.fromRow + 1][move.fromColumn - 1]
+				if (col - newC == 2) {
+					if (board[row + 1][col - 1] != null) {
+						if (board[row + 1][col - 1]
 								.player() != owner) {
 							return true;
 						}
@@ -65,20 +70,20 @@ public class Kings extends GamePiece {
 				}
 			}
 			//down jump
-			if (move.fromRow - move.toRow == 2) {
+			if (row - newR == 2) {
 				//right
-				if (move.toColumn - move.fromColumn == 2) {
-					if (board[move.fromRow - 1][move.fromColumn + 1] != null) {
-						if (board[move.fromRow - 1][move.fromColumn + 1]
+				if (newC - col == 2) {
+					if (board[row - 1][col + 1] != null) {
+						if (board[row - 1][col + 1]
 								.player() != owner) {
 							return true;
 						}
 					}
 				}
 				//left
-				if (move.fromColumn - move.toColumn == 2) {
-					if (board[move.fromRow - 1][move.fromColumn - 1] != null) {
-						if (board[move.fromRow - 1][move.fromColumn - 1]
+				if (col - newC == 2) {
+					if (board[row - 1][col - 1] != null) {
+						if (board[row - 1][col - 1]
 								.player() != owner) {
 							return true;
 						}
