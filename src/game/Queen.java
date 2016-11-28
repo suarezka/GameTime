@@ -98,43 +98,57 @@ public class Queen extends ChessPiece {
 		if (move.toRow < move.fromRow) {
 			
 			//NORTHWEST
-			if(move.toColumn > move.fromColumn) {
-				for(int j = move.fromRow - 1, i = move.fromColumn + 1; j != move.toRow && i != move.toColumn; j--, i++) {
-					if(board[j][i] != null) {
+			if (move.toColumn > move.fromColumn) {
+				for (int j = move.fromRow - 1, 
+						i = move.fromColumn + 1; 
+						j != move.toRow && i != move.toColumn; j--, i++) {
+					
+					if (board[j][i] != null) {
 						return false;
 					}
 				}
 			}
-			//north
-			if(move.toColumn == move.fromColumn) {
-				for(int i = move.toRow+1; i!=move.fromRow; i++) {
-					if(board[i][move.fromColumn] != null) {
+			
+			//NORTH
+			if (move.toColumn == move.fromColumn) {
+				
+				for (int i = move.toRow + 1; 
+						i != move.fromRow; i++) {
+					
+					if (board[i][move.fromColumn] != null) {
 						return false;
 					}
 				}
 			}
-			//northwest
-			if(move.toColumn < move.fromColumn) {
-				for(int j = move.fromRow - 1, i = move.fromColumn - 1; j != move.toRow && i != move.toColumn; j--, i--) {
-					if(board[j][i] != null) {
+			
+			//NORTHWEST
+			if (move.toColumn < move.fromColumn) {
+				for (int j = move.fromRow - 1, 
+						i = move.fromColumn - 1; 
+						j != move.toRow && i != move.toColumn; j--, i--) {
+					
+					if (board[j][i] != null) {
 						return false;
 					}
 				}
 			}
 		}
-		if(move.toRow == move.fromRow) {
-			//east
-			if(move.toColumn > move.fromColumn) {
-				for(int i = move.fromColumn + 1; i != move.toColumn; i++) {
-					if(board[move.fromRow][i] != null) {
+		
+		if (move.toRow == move.fromRow) {
+			
+			//EAST
+			if (move.toColumn > move.fromColumn) {
+				for (int i = move.fromColumn + 1; i != move.toColumn; i++) {
+					if (board[move.fromRow][i] != null) {
 						return false;
 					}
 				}
 			}
-			//west
-			if(move.toColumn < move.fromColumn) {
-				for(int i = move.toColumn + 1; i != move.fromColumn; i++) {
-					if(board[move.fromRow][i] != null) {
+			
+			//WEST
+			if (move.toColumn < move.fromColumn) {
+				for (int i = move.toColumn + 1; i != move.fromColumn; i++) {
+					if (board[move.fromRow][i] != null) {
 						return false;
 					}
 				}

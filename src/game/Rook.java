@@ -82,7 +82,7 @@ public class Rook extends ChessPiece {
 				} else {
 					stepValue = 
 							(-(move.fromColumn - move.toColumn) 
-									/ Math.abs(move.fromColumn - move.toColumn));
+								/ Math.abs(move.fromColumn - move.toColumn));
 					
 					for (int i = (move.fromColumn + stepValue); 
 								i != move.toColumn; i = i + stepValue) {
