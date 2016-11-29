@@ -8,27 +8,33 @@ import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
 import gvprojects.chess.model.Player;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * Handles most in game logic for the GUI
- *
- * @author DaiLynn Dietz
- * @author Kaye Suarez
- * @version Mar 18, 2014
- ************************************************************/
+/**********************************************************************
+ * ChessModel class implements various methods for game play.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class ChessModel implements IChessModel {
 
 	//Instance Variables
+	/** Current Player. */
 	private Player curPlayer;
+	
+	/** Game in Progress value. */
 	private boolean gameInProgress;
+	
+	/** Current board. */
 	private IChessPiece[][] board;
+	
+	/** Attack moves for black. */
 	private ArrayList<Move> attackMovesB;
+	
+	/** Attack moves for white. */
 	private ArrayList<Move> attackMovesW;
 
 
 	/************************************************************
-	 * ChessModel constructor
+	 * ChessModel constructor.
 	 ************************************************************/
 	public ChessModel() {
 		//Create game board
@@ -77,42 +83,44 @@ public class ChessModel implements IChessModel {
 	}
 
 	/************************************************************
-	 * Gives the current player in game
+	 * Gives the current player in game.
 	 * 
 	 * @return  Current Player
 	 ************************************************************/
 	@Override
-	public Player currentPlayer() {
+	public final Player currentPlayer() {
 		return curPlayer;
 	}
 
 	/************************************************************
-	 * Returns if the game is in check, regardless of color
+	 * Returns if the game is in check, regardless of color.
 	 * 
 	 * @return  True if game is in check
 	 ************************************************************/
 	@Override
-	public boolean inCheck() {
+	public final boolean inCheck() {
 		boolean isInCheck = false;
 
 		//Clearing arrayList to avoid
 		attackMovesB.clear();
 		attackMovesW.clear();
 
-		for(int r = 0; r < board.length; r++){
-			for(int c = 0; c < board[0].length; c++){
+		for (int r = 0; r < board.length; r++) {
+			for (int c = 0; c < board[0].length; c++) {
 
-				if(board[r][c] == null) continue;
+				if (board[r][c] == null) {
+					continue;
+				}
 
 				//Checks if piece at board is a king in check
-				if(board[r][c].type().equals("King") && 
-						((King) board[r][c]).isInCheck(r, c, board)){
+				if (board[r][c].type().equals("King") 
+						&& ((King) board[r][c]).isInCheck(r, c, board)) {
 					isInCheck = true;
 
 					//Checks player color to fill appropriate array list
-					if(board[r][c].player() == Player.BLACK){
+					if (board[r][c].player() == Player.BLACK) {
 						attackMovesB = ((King) board[r][c]).getAttackers();
-					}else{
+					} else {
 						attackMovesW = ((King) board[r][c]).getAttackers();
 					}
 				}
@@ -122,16 +130,16 @@ public class ChessModel implements IChessModel {
 	}
 
 	/************************************************************
-	 * Returns if there is a checkmate or not
+	 * Returns if there is a checkmate or not.
 	 * 
 	 * @return True if there is a checkmate
 	 ************************************************************/
 	@Override
-	public boolean isComplete() {
+	public final boolean isComplete() {
 
 		//Checks if in check first, also as result fills
 		//array lists of attackers
-		if(!inCheck()){
+		if (!inCheck()) {
 			return false;
 		}
 
@@ -140,40 +148,45 @@ public class ChessModel implements IChessModel {
 		int[] MOVE_C = {0, 1, 1, 1, 0, -1, -1, -1};
 
 		//Checks if black king is in check
-		if(attackMovesB.size() == 1){
+		if (attackMovesB.size() == 1) {
 			int kingR = attackMovesB.get(0).toRow;
 			int kingC = attackMovesB.get(0).toColumn;
 
 			//Checks if king can escape
-			for(int k = 0; k < MOVE_R.length; k++){
+			for (int k = 0; k < MOVE_R.length; k++) {
 
 				King piece = ((King) board[kingR][kingC]);
 				int row = MOVE_R[k] + kingR;
 				int col = MOVE_C[k] + kingC;
 
 				//Checks if king can safely move away
-				if(piece.isValidMove(new Move(kingR, kingC, row, col), board) 
-						&& !piece.isInCheck(row, col, board)){
+				if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 
+						&& !piece.isInCheck(row, col, board)) {
 					return false;
 				}
 			}
 
 			//Otherwise, checks if piece can block move
-			for(int r = 0; r < board.length; r++){
-				for(int c = 0; c < board[0].length; c++){
+			for (int r = 0; r < board.length; r++) {
+				for (int c = 0; c < board[0].length; c++) {
 
-					if(board[r][c] == null) continue;
-					if(board[r][c].player() != Player.BLACK || 
-							board[r][c].type().equals("King")) continue;
+					if (board[r][c] == null) {
+						continue;
+					}
+					
+					if (board[r][c].player() != Player.BLACK 
+							|| board[r][c].type().equals("King")) {
+						continue;
+					}
 
 
 					//Gets path the attacking piece plans to take
 					ArrayList<Point> path = pathGetter(attackMovesB.get(0));
 
 					//Sees if piece can block attacking pieces path
-					for(Point p: path){
-						if(board[r][c].isValidMove(new Move(r, c, 
-								(int) p.getX(), (int) p.getY()), board)){
+					for (Point p: path) {
+						if (board[r][c].isValidMove(new Move(r, c, 
+								(int) p.getX(), (int) p.getY()), board)) {
 							return false;
 						}
 					}
@@ -181,41 +194,46 @@ public class ChessModel implements IChessModel {
 			}
 
 			//Checks if white king is in check
-		}else if(attackMovesW.size() == 1){
+		} else if (attackMovesW.size() == 1) {
 			int kingR = attackMovesW.get(0).toRow;
 			int kingC = attackMovesW.get(0).toColumn;
 
 
 			//Loops through possible king escapes
-			for(int k = 0; k < MOVE_R.length; k++){
+			for (int k = 0; k < MOVE_R.length; k++) {
 
 				King piece = ((King) board[kingR][kingC]);
 				int row = MOVE_R[k] + kingR;
 				int col = MOVE_C[k] + kingC;
 
 				//Checks if move is valid and if it will take king out of check
-				if(piece.isValidMove(new Move(kingR, kingC, row, col), board) 
-						&& !piece.isInCheck(row, col, board)){
+				if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 
+						&& !piece.isInCheck(row, col, board)) {
 					return false;
 				}
 
 			}
 
 			//Loops through board
-			for(int r = 0; r < board.length; r++){
-				for(int c = 0 ; c < board[0].length; c++){
+			for (int r = 0; r < board.length; r++) {
+				for (int c = 0; c < board[0].length; c++) {
 
-					if(board[r][c] == null) continue; 
-					if(board[r][c].player() != Player.WHITE || 
-							board[r][c].type().equals("King")) continue;
+					if (board[r][c] == null) {
+						continue; 
+					}
+					
+					if (board[r][c].player() != Player.WHITE 
+							|| board[r][c].type().equals("King")) {
+						continue;
+					}
 
 					//Gets intended attack path
 					ArrayList<Point> path = pathGetter(attackMovesW.get(0));
 
 					//Loops through intended path and tries to block
-					for(Point p: path){
-						if(board[r][c].isValidMove(new Move(r, c, 
-								(int) p.getX(), (int) p.getY()), board)){
+					for (Point p: path) {
+						if (board[r][c].isValidMove(new Move(r, c, 
+								(int) p.getX(), (int) p.getY()), board)) {
 							return false;
 						}
 					}
@@ -229,21 +247,21 @@ public class ChessModel implements IChessModel {
 
 
 	/************************************************************
-	 * Gets the path traveled by the attacking piece
+	 * Gets the path traveled by the attacking piece.
 	 * 
 	 * @param move Intended move by attacking piece
 	 * @return  ArrayList of points along path
 	 ************************************************************/
-	private ArrayList<Point> pathGetter(Move move){
+	private ArrayList<Point> pathGetter(final Move move) {
 		ArrayList<Point> path = new ArrayList<Point>();
 
 		int fromR = move.fromRow;
 		int fromC = move.fromColumn;
 
 		//Checking if the methods of ChessPiece can be used
-		if(board[fromR][fromC].type().equals("Queen") ||
-				board[fromR][fromC].type().equals("Rook") || 
-				board[fromR][fromC].type().equals("Bishop")){
+		if (board[fromR][fromC].type().equals("Queen") 
+				|| board[fromR][fromC].type().equals("Rook") 
+				|| board[fromR][fromC].type().equals("Bishop")) {
 
 			//			board[fromR][fromC].isValidMove(move, board);
 			((ChessPiece) board[fromR][fromC]).isPathClear(
@@ -252,12 +270,12 @@ public class ChessModel implements IChessModel {
 
 			//Checking if piece has no path, and just needs
 			//to be removed to block
-		}else if(board[fromR][fromC].type().equals("Pawn") 
-				|| board[fromR][fromC].type().equals("Knight")){
+		} else if (board[fromR][fromC].type().equals("Pawn") 
+				|| board[fromR][fromC].type().equals("Knight")) {
 			path.add(new Point(fromR, fromC));
 
 			//Else case is for kings which dont attack.
-		}else{
+		} else {
 			path = null;
 		}
 
@@ -265,13 +283,13 @@ public class ChessModel implements IChessModel {
 	}
 
 	/************************************************************
-	 * isValidMove for model, returns if  a move is valid
+	 * isValidMove for model, returns if  a move is valid.
 	 * 
 	 * @param move Move being checked for validity
 	 * @return  True if move is valid
 	 ************************************************************/
 	@Override
-	public boolean isValidMove(Move move) {
+	public final boolean isValidMove(final Move move) {
 
 		int toR = move.toRow;
 		int toC = move.toColumn;
@@ -279,37 +297,40 @@ public class ChessModel implements IChessModel {
 		int fromC = move.fromColumn;
 
 		//Doesnt allow pieces to move out of turn
-		if(board[fromR][fromC] == null) return false;
+		if (board[fromR][fromC] == null) {
+			return false;
+		}
+		
 		if (board[fromR][fromC].player() != currentPlayer()) {
 			return false;
 		}
 
 		//Doesnt allow invalid moves for piece behavior
-		if(!board[fromR][fromC].isValidMove(move, board)){
+		if (!board[fromR][fromC].isValidMove(move, board)) {
 			return false;
 		}
 
 		//If game is in check, tries to move pieces out of check
-		if(inCheck()){
+		if (inCheck()) {
 			ArrayList<Point> path;
 
 			//Sets path to appropriate attacking path
-			if(Player.BLACK == curPlayer && !attackMovesB.isEmpty()){
+			if (Player.BLACK == curPlayer && !attackMovesB.isEmpty()) {
 				path = pathGetter(attackMovesB.get(0));	
-			}else if(Player.WHITE == curPlayer && !attackMovesW.isEmpty()){
+			} else if (Player.WHITE == curPlayer && !attackMovesW.isEmpty()) {
 				path = pathGetter(attackMovesW.get(0));
-			}else{
+			} else {
 				return true;
 			}
 
 			//Checks if king can move away
-			if(board[fromR][fromC].type().equals("King")){
-				if (((King) board[fromR][fromC]).isInCheck(toR, toC, board)){
+			if (board[fromR][fromC].type().equals("King")) {
+				if (((King) board[fromR][fromC]).isInCheck(toR, toC, board)) {
 					return false;
 				}
 
 				//Checks if piece intends to move into block attack
-			}else if(!path.contains(new Point(toR, toC))){
+			} else if (!path.contains(new Point(toR, toC))) {
 				return false;
 			}
 		}
@@ -317,12 +338,12 @@ public class ChessModel implements IChessModel {
 	}
 
 	/************************************************************
-	 * Method to actually move pieces around on the board
+	 * Method to actually move pieces around on the board.
 	 * 
 	 * @param move Desired move to be made
 	 ************************************************************/
 	@Override
-	public void move(Move move) {
+	public final void move(final Move move) {
 		if (!isValidMove(move)) {
 			throw new IllegalArgumentException("Not a valid move");
 		}
@@ -333,34 +354,34 @@ public class ChessModel implements IChessModel {
 	}
 
 	/************************************************************
-	 * Returns the number of columns in board[][]
+	 * Returns the number of columns in board[][].
 	 * 
 	 * @return  Length of board[0]
 	 ************************************************************/
 	@Override
-	public int numColumns() {
+	public final int numColumns() {
 		return board[0].length;
 	}
 
 	/************************************************************
-	 * Returns the number of rows in board[][]
+	 * Returns the number of rows in board[][].
 	 * 
 	 * @return  Length of board
 	 ************************************************************/
 	@Override
-	public int numRows() {
+	public final int numRows() {
 		return board.length;
 	}
 
 	/************************************************************
-	 * returns piece at the given location on the board
+	 * returns piece at the given location on the board.
 	 * 
 	 * @param row Row where piece is found
 	 * @param col Column where piece is found
 	 * @return  IChessPiece from the board at desired location
 	 ************************************************************/
 	@Override
-	public IChessPiece pieceAt(int row, int col) {
+	public final IChessPiece pieceAt(final int row, final int col) {
 		return board[row][col];
 	}
 

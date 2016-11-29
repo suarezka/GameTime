@@ -1,17 +1,12 @@
 package checkers;
 
-import java.awt.Panel;
-
-
 /********************************************************************
  * Move constructs the movement of pieces from starting point to end.
  * 
  * @author Nate Benson, Kaye Suarez, Jake Young
  * @version 1.0 
  ********************************************************************/
-
 public class Move {
-	
 	
 	/** start and end position of piece. */
 	private static int fromRow, fromColumn, toRow, toColumn;

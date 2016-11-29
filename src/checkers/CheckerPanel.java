@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList; 
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -38,12 +37,12 @@ import javax.swing.JMenuItem;
 
 public class CheckerPanel extends JPanel {
 	
+	/** JMenuBar value. */
 	public static JMenuBar topMenu;
-	private JMenuItem newGame;
-	private JMenuItem quitGame;
-	private JMenuItem mainMenu;
-	private JMenuItem save;
-	private JMenuItem load;
+	
+	/** JMenuItems. */
+	private JMenuItem newGame, quitGame, mainMenu, save, load;
+
 	
 	/** board: array of buttons for board tiles. */
 	private JButton[][] board;
@@ -284,7 +283,8 @@ public class CheckerPanel extends JPanel {
 	public final void saveBoard(final String filename) {
 		try {
 			File file = new File(filename);
-			Writer w = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			Writer w = new OutputStreamWriter(
+						new FileOutputStream(file), "UTF-8");
 			PrintWriter out = new PrintWriter(w);
 		 
 			for (int i = 0; i < BOARDSIZE; i++) {
@@ -400,27 +400,27 @@ public class CheckerPanel extends JPanel {
 
 		@Override
 		public void mousePressed(final MouseEvent a) {
-			if(a.getSource() == newGame) {
+			if (a.getSource() == newGame) {
 				reset();
 				displayBoard();
 			}
-			if(a.getSource() == quitGame) {
+			if (a.getSource() == quitGame) {
 				System.exit(0);
 			}
-			if(a.getSource() == mainMenu) {
+			if (a.getSource() == mainMenu) {
 				setVisible(false);
 				CheckerGUI.frame.setVisible(false);
 				GameGUI.main(null);
 			}
-			if(a.getSource() == save) {
+			if (a.getSource() == save) {
 				String str = JOptionPane.showInputDialog(null, 
 						"Enter file name:"); 
-				if(str != null) {
+				if (str != null) {
 					saveBoard(str);
 				}
 				displayBoard();
 			}
-			if(a.getSource() == load) {
+			if (a.getSource() == load) {
 				openFile();
 				displayBoard();
 			}
@@ -450,7 +450,7 @@ public class CheckerPanel extends JPanel {
 												
 												model.setCurrentPiece(
 														model.pieceAt(r, c));
-												currentMoverow = r;
+												currentMove.fromRow = r;
 												currentMove.fromColumn = c;
 											}
 										}
@@ -464,9 +464,10 @@ public class CheckerPanel extends JPanel {
 								model.move(currentMove);
 								model.currentPiece = null;
 								model.kingMe();
-								if(model.gameOver()) {
+								if (model.gameOver()) {
 									//end game
-									JOptionPane.showMessageDialog(rightSide, "");
+									JOptionPane.showMessageDialog(
+												rightSide, "");
 								}
 								displayBoard();
 							}
@@ -524,13 +525,15 @@ public class CheckerPanel extends JPanel {
 //					if(a.getSource() == board[r][c]) {
 //						if(a.getButton() == MouseEvent.BUTTON1) {
 //							if(model.pieceAt(r, c) != null) {
-//								if(model.pieceAt(r, c).player() == model.getCurrentPlayer()) {
+//								if(model.pieceAt(r, c).player() 
+//			  								== model.getCurrentPlayer()) {
 //									model.setCurrentPiece(model.pieceAt(r, c));
 //									currentMove = new Move(r, c, 0, 0);
 //									currentMoverow = r;
 //									currentMove.fromColumn = c;
 //								}
-//								else if(model.pieceAt(r, c).player() != model.getCurrentPlayer()) {
+//								else if(model.pieceAt(r, c).player() 
+//			  								!= model.getCurrentPlayer()) {
 //									currentMove.toRow = r;
 //									currentMove.toColumn = c;
 //									model.move(currentMove);

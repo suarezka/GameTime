@@ -26,47 +26,124 @@ import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
 import gvprojects.chess.model.Player;
 
-
+/**********************************************************************
+ * OurGUI runs the chess game.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class OurGUI implements ActionListener {
+	
+	/** JFrame value. */
 	private JFrame frame;
+	
+	/** JPanel value. */
 	private JPanel panel;
+	
+	/** ButtonListener value. */
 	private ButtonListener bl;
+	
+	/** JMenuBar value. */
 	private JMenuBar menus;
+	
+	/** JMenu value. */
 	private JMenu options;
+	
+	/** JMenuItem value. */
 	private JMenuItem newGame, quit;
+	
+	/** JButton value. */
 	private JButton[][] chessBoard;
+	
+	/** JLabel value. */
 	private JLabel status;
+	
+	/** IChessModel value. */
 	private IChessModel game;
+	
+	/** First and Second Row and Column value. */
 	private int firstR, firstC, secondR, secondC;
 	
+	/** black pawn image. */
 	private Image bPawn;
+	
+	/** white pawn image. */
 	private Image wPawn;
+	
+	/** black rook image. */
 	private Image bRook;
+	
+	/** white rook image. */
 	private Image wRook;
+	
+	/** black knight image. */
 	private Image bKnight;
+	
+	/** white knight image. */
 	private Image wKnight;
+	
+	/** black bishop image. */
 	private Image bBishop;
+	
+	/** white bishop image. */
 	private Image wBishop;
+	
+	/** black queen image. */
 	private Image bQueen;
+	
+	/** white queen image. */
 	private Image wQueen;
+	
+	/** black king image. */
 	private Image bKing;
+	
+	/** white king image. */
 	private Image wKing;
 	
-	//ImageIcons
+	/** black pawn image icon. */
 	private ImageIcon blackPawn;
+	
+	/** white pawn image icon. */
 	private ImageIcon whitePawn;
+	
+	/** black rook image icon. */
 	private ImageIcon blackRook;
+	
+	/** white rook image icon. */
 	private ImageIcon whiteRook;
+	
+	/** black knight image icon. */
 	private ImageIcon blackKnight;
+	
+	/** white knight image icon. */
 	private ImageIcon whiteKnight;
+	
+	/** black bishop image icon. */
 	private ImageIcon blackBishop;
+	
+	/** white bishop image icon. */
 	private ImageIcon whiteBishop;
+	
+	/** black queen image icon. */
 	private ImageIcon blackQueen;
+	
+	/** white queen image icon. */
 	private ImageIcon whiteQueen;
+	
+	/** black king image icon. */
 	private ImageIcon blackKing;
+	
+	/** white king image icon. */
 	private ImageIcon whiteKing;
 	
-	private static final int IMAGE_SIZE = 64;		
+	/** Image Size. */
+	private static final int IMAGE_SIZE = 64;
+	
+	/** Resized Image. */
+	private static final int NEW_SIZE = 69;
+	
+	/** Board Size. */
+	private static final int BOARD_SIZE = 8;
 	
 	/************************************************************
 	 * GUI constructor.
@@ -78,8 +155,8 @@ public class OurGUI implements ActionListener {
 		panel = new JPanel();
 		bl = new ButtonListener();
 		
-		panel.setLayout(new GridLayout(8,8));
-		chessBoard = new JButton[8][8];
+		panel.setLayout(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+		chessBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
 		
 		setBoard(chessBoard);
 		
@@ -97,7 +174,7 @@ public class OurGUI implements ActionListener {
 	 * 
 	 * @param board 2D JButton array
 	 ****************************************************************/
-	public void setBoard(JButton[][] board) {
+	public final void setBoard(final JButton[][] board) {
 		
 		//Clear panel to reset it
 		panel.removeAll();
@@ -109,7 +186,7 @@ public class OurGUI implements ActionListener {
 				//Set up the JButtons
 				chessBoard[k][m] = new JButton();
 				chessBoard[k][m].setPreferredSize(
-						new Dimension(IMAGE_SIZE + 5, IMAGE_SIZE + 5));
+						new Dimension(NEW_SIZE, NEW_SIZE));
 				chessBoard[k][m].addActionListener(this);
 				
 				//Create alternating background colors
@@ -141,21 +218,36 @@ public class OurGUI implements ActionListener {
 		
 	}
 	
+	/*********************************************************
+	 * addIcons method loads and add images for chess pieces.
+	 *********************************************************/
 	private void addIcons() {
 		try {
 			
-			bPawn = ImageIO.read(getClass().getResource("/Pictures/blackPawn.png"));
-			wPawn = ImageIO.read(getClass().getResource("/Pictures/whitePawn.png"));
-			bRook = ImageIO.read(getClass().getResource("/Pictures/blackRook.png"));
-			wRook = ImageIO.read(getClass().getResource("/Pictures/whiteRook.png"));
-			bKnight = ImageIO.read(getClass().getResource("/Pictures/blackKnight.png"));
-			wKnight = ImageIO.read(getClass().getResource("/Pictures/whiteKnight.png"));
-			bBishop = ImageIO.read(getClass().getResource("/Pictures/blackBishop.png"));
-			wBishop = ImageIO.read(getClass().getResource("/Pictures/whiteBishop.png"));
-			bQueen = ImageIO.read(getClass().getResource("/Pictures/blackQueen.png"));
-			wQueen = ImageIO.read(getClass().getResource("/Pictures/whiteQueen.png"));
-			bKing = ImageIO.read(getClass().getResource("/Pictures/blackKing.png"));
-			wKing = ImageIO.read(getClass().getResource("/Pictures/whiteKing.png"));
+			bPawn = ImageIO.read(
+					getClass().getResource("/Pictures/blackPawn.png"));
+			wPawn = ImageIO.read(
+					getClass().getResource("/Pictures/whitePawn.png"));
+			bRook = ImageIO.read(
+					getClass().getResource("/Pictures/blackRook.png"));
+			wRook = ImageIO.read(
+					getClass().getResource("/Pictures/whiteRook.png"));
+			bKnight = ImageIO.read(
+					getClass().getResource("/Pictures/blackKnight.png"));
+			wKnight = ImageIO.read(
+					getClass().getResource("/Pictures/whiteKnight.png"));
+			bBishop = ImageIO.read(
+					getClass().getResource("/Pictures/blackBishop.png"));
+			wBishop = ImageIO.read(
+					getClass().getResource("/Pictures/whiteBishop.png"));
+			bQueen = ImageIO.read(
+					getClass().getResource("/Pictures/blackQueen.png"));
+			wQueen = ImageIO.read(
+					getClass().getResource("/Pictures/whiteQueen.png"));
+			bKing = ImageIO.read(
+					getClass().getResource("/Pictures/blackKing.png"));
+			wKing = ImageIO.read(
+					getClass().getResource("/Pictures/whiteKing.png"));
 			
 		} catch (IOException e) {
 			System.out.println("5");
@@ -244,7 +336,8 @@ public class OurGUI implements ActionListener {
 	 * @param toR row moving to
 	 * @param toC row moving to
 	 ***************************************************************/
-	private void movePiece(int fromR, int fromC, int toR, int toC) {
+	private void movePiece(final int fromR, final int fromC, 
+							final int toR, final int toC) {
 		Move move = new Move(fromR, fromC, toR, toC);
 		
 		try {
@@ -303,8 +396,16 @@ public class OurGUI implements ActionListener {
     	frame.setJMenuBar(menus);
     }
     
+    /************************************
+     * Buttoner Listener.
+     ************************************/
     private class ButtonListener implements ActionListener {
-    	public void actionPerformed(ActionEvent e) {
+    	
+    	/**************************
+    	 * Handles menu clicks.
+    	 * @param e mouse click
+    	 **************************/
+    	public void actionPerformed(final ActionEvent e) {
     		if (e.getSource() == quit) {
 				System.exit(0);
 			}
@@ -323,7 +424,7 @@ public class OurGUI implements ActionListener {
      * @param e Event triggering action listener
      *****************************************************************/
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public final void actionPerformed(final ActionEvent e) {
 		Object button = e.getSource();
 		
 		//Loop through to find selected JButton
@@ -337,14 +438,14 @@ public class OurGUI implements ActionListener {
 					if (firstC == -1) {
 						firstR = k;
                         firstC = m;
-                        status.setText(String.format ("Move from (%d,%d) to?",
+                        status.setText(String.format("Move from (%d,%d) to?",
                                 firstR, firstC));
                         
 					//Second button selected (to location)
 					} else {
 						secondR = k;
                         secondC = m;
-                        status.setText(String.format ("(%d,%d) ==> (%d,%d)",
+                        status.setText(String.format("(%d,%d) ==> (%d,%d)",
                                 firstR, firstC, secondR, secondC));
                         
                         movePiece(firstR, firstC, secondR, secondC);

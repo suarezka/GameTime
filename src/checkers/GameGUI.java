@@ -1,24 +1,24 @@
 package checkers;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JPanel;
 
+
+/**********************************************************************
+ * GameGUI is the opening game menu.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class GameGUI {
 	
+	/** JFrame menu value. */
 	public static JFrame menu;
 	
+	/*********************************
+	 * Main method to run GUI.
+	 * @param args string args
+	 *********************************/
 	public static void main(String[] args) {
 		menu = new JFrame("Main Menu");
 		MenuPanel panel = new MenuPanel();

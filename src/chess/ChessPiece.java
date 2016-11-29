@@ -7,46 +7,42 @@ import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
 import gvprojects.chess.model.Player;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * Parent class to all other chess piece classes
- *
- * @author Kaye Suarez
- * @author DaiLynn Dietz
- * @version Mar 18, 2014
- ************************************************************/
+/**********************************************************************
+ * ChessPiece class implements the IChessPiece Interface for game
+ * piece movement.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public abstract class ChessPiece implements IChessPiece {
 
-	/** Owner of the ChessPiece */
+	/** Owner of the ChessPiece. */
 	private Player owner;
 	
-	/** Array List of latest path */
+	/** Array List of latest path. */
 	private ArrayList<Point> path;
 
 	/************************************************************
-	 * Constructor for ChessPiece
+	 * Constructor for ChessPiece.
 	 * 
 	 * @param p Player that owns this piece
 	 ************************************************************/
-	public ChessPiece (Player p) {
+	public ChessPiece(final Player p) {
 		owner = p;
 		path = new ArrayList<Point>();
 	}
 
 	/************************************************************
 	 * Abstract method that determines if a move is valid or not
-	 * for the most general case
+	 * for the most general case.
 	 * 
 	 * @param move The move to be taken by the piece
 	 * @param board The game board occupied with chess pieces
 	 * @return  true if move is valid
 	 ************************************************************/
 	@Override
-	public boolean isValidMove(Move move, IChessPiece[][] board) {
-
-		try{
-
+	public boolean isValidMove(final Move move, final IChessPiece[][] board) {
+		try {
 			//Gathering move data
 			int fromC = move.fromColumn;
 			int fromR = move.fromRow;
@@ -54,42 +50,44 @@ public abstract class ChessPiece implements IChessPiece {
 			int toR = move.toRow;
 
 			//Makes sure a move is happening
-			if(toC == fromC && toR == fromR)
+			if (toC == fromC && toR == fromR) {
 				return false;
-
+			}
+			
 			//Check if from location has piece
 			if (board[fromR][fromC] == null) {
-				throw new IllegalArgumentException ("No piece is there.");
+				throw new IllegalArgumentException("No piece is there.");
 			}
 
 			//Checking if destination is occupied by same team
-			if(board[toR][toC] != null && board[toR][toC].player() == owner)
+			if (board[toR][toC] != null && board[toR][toC].player() == owner) {
 				return false;
-
+			}
+			
 			//Ensuring that the piece is at the from location
-			if(board[fromR][fromC] != this) {
+			if (board[fromR][fromC] != this) {
 				throw new IllegalArgumentException("Not expected piece.");
 			}
 
 			return true;
 
-		}catch (IndexOutOfBoundsException e){
+		} catch (IndexOutOfBoundsException e) {
 			return false;
 		}
 	}
 
 	/************************************************************
-	 * Returns the current owner of the piece in question
+	 * Returns the current owner of the piece in question.
 	 * 
 	 * @return  Owner team of the ChessPiece
 	 ************************************************************/
 	@Override
-	public Player player() {
+	public final Player player() {
 		return owner;
 	}
 
 	/************************************************************
-	 * Abstract method that returns the type of piece made
+	 * Abstract method that returns the type of piece made.
 	 * 
 	 * @return  Type of piece (rook, bishop, king etc)
 	 ************************************************************/
@@ -101,15 +99,15 @@ public abstract class ChessPiece implements IChessPiece {
 	 * Public method that determines which private method to use
 	 * to check if the path is clear.
 	 *
-	 * @param fromR
-	 * @param fromC
-	 * @param toR
-	 * @param toC
-	 * @param board
-	 * @return
+	 * @param fromR current row
+	 * @param fromC current col
+	 * @param toR new row
+	 * @param toC new col
+	 * @param board current board
+	 * @return true if path clear, false if not
 	 ************************************************************/
-	public boolean isPathClear(int fromR, int fromC, int toR, 
-			int toC, IChessPiece board[][]) {
+	public final boolean isPathClear(final int fromR, final int fromC,
+			final int toR, final int toC, final IChessPiece[][] board) {
 
 		path.clear();
 		path.add(new Point(fromR, fromC));
@@ -132,8 +130,8 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param board Board being played on
 	 * @return  True if path between points is clear of pieces
 	 ************************************************************/
-	private boolean isPathClearHorizontal(int fromR, int fromC, int toR, 
-			int toC, IChessPiece board[][]) {
+	private boolean isPathClearHorizontal(final int fromR, final int fromC, 
+			final int toR, final int toC, final IChessPiece[][] board) {
 
 		int start;
 		int end;
@@ -198,8 +196,8 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param board Board being played on
 	 * @return  True if path between points is clear of pieces
 	 ************************************************************/
-	private boolean isPathClearDiagonal(int fromR, int fromC, int toR, 
-			int toC, IChessPiece board[][]) {
+	private boolean isPathClearDiagonal(final int fromR, final int fromC, 
+			final int toR, final int toC, final IChessPiece[][] board) {
 
 		/* Checks diagonal paths */
 		int startR;
@@ -279,7 +277,7 @@ public abstract class ChessPiece implements IChessPiece {
 	}
 	
 	/************************************************************
-	 * Returns true when a piece can "check" the other players king
+	 * Returns true when a piece can "check" the other players king.
 	 * 
 	 * @param piece Piece that may be able to check
 	 * @param board Board being played on
@@ -287,28 +285,29 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param col Start col of the piece trying to check
 	 * @return  True if piece can check other players king
 	 ************************************************************/
-	public boolean canCheck(IChessPiece piece, IChessPiece[][] board, 
-			int row, int col){
+	public final boolean canCheck(final IChessPiece piece, 
+									final IChessPiece[][] board, 
+									final int row, final int col) {
 		
 		//Loops through board
-		for(int r = 0; r < board.length; r++){
-			for(int c = 0; c < board[0].length; c++){
-				Move move = new Move(row, col , r, c);
+		for (int r = 0; r < board.length; r++) {
+			for (int c = 0; c < board[0].length; c++) {
+				Move move = new Move(row, col, r, c);
 				IChessPiece otherPiece = null;
 				Player otherPlayer = null;
 				
 				//Stores piece and info
-				if(board[r][c] != null){
+				if (board[r][c] != null) {
 					otherPiece = board[r][c];
 					otherPlayer = otherPiece.player();
-				}else{
+				} else {
 					continue;
 				}
 				
 				//Returns true when there is a valid
 				//move to a king of other color
-				if(piece.isValidMove(move, board) && (otherPiece.type())
-						.equals("King") && otherPlayer != piece.player()){
+				if (piece.isValidMove(move, board) && (otherPiece.type())
+						.equals("King") && otherPlayer != piece.player()) {
 					return true;
 				}
 			}
@@ -318,10 +317,10 @@ public abstract class ChessPiece implements IChessPiece {
 	}
 
 	/************************************************************
-	 * Returns the path for the piece 
+	 * Returns the path for the piece.
 	 * @return  Array list of points that represent path of piece
 	 ************************************************************/
-	public ArrayList<Point> getPiecePath(){
+	public final ArrayList<Point> getPiecePath() {
 		return path;
 	}
 }

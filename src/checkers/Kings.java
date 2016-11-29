@@ -9,7 +9,7 @@ package checkers;
 public class Kings extends GamePiece {
 	
 	/** Owner of the piece. */
-	public Player owner;
+	private Player owner;
 	
 	/******************************* 
 	 * Constructor for King piece.

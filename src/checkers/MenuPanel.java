@@ -1,22 +1,14 @@
 package checkers;
 
-import chess.GUI.*;
+import chess.GUI.OurGUI;
 import javax.swing.JPanel;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -25,26 +17,31 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+/**
+ * @author kaye
+ *
+ */
 public class MenuPanel extends JPanel {
 	
-	private JButton checkerButton;
-	private JButton chessButton;
-	private JButton settingsButton;
-	private JLabel checkers;
-	private JLabel chess;
-	private JButton quit;
-	private JLabel title;
-	private JLabel menu;
+	/** JButton values. */
+	private JButton checkerButton, chessButton, settingsButton, quit;
+	
+	/** JLabel checker value. */
+	private JLabel checkers, chess, title, menu;
+
+	/** Background Image. */
 	private BufferedImage background;
 	
-	private Image checkerLogo;
-	private Image chessLogo;
-	private Image settingsLogo;
-	private ImageIcon CRL;
-	private ImageIcon CL;
-	private ImageIcon settings;
+	/** Images. */
+	private Image checkerLogo, chessLogo, settingsLogo;
+	
+	/** Image Icons. */
+	private ImageIcon CRL, CL, settings;
 	//private ImageIcon bg;
 	
+	/***************************************
+	 * Construct Panel for Main GUI.
+	 ***************************************/
 	public MenuPanel() {
 		
 		addImages();
@@ -100,27 +97,34 @@ public class MenuPanel extends JPanel {
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected final void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, null);
 	}
 	
+	/************************************************
+	 * Method to load and add images for main menu.
+	 ************************************************/
 	private void addImages() {
 		try {
 			
-			chessLogo = ImageIO.read(getClass().getResource("/Pictures/blackPawn.png"));
+			chessLogo = ImageIO.read(
+					getClass().getResource("/Pictures/blackPawn.png"));
 			Image a = chessLogo.getScaledInstance(125, 125, 125);
 			CL = new ImageIcon(a);
 			
-			checkerLogo = ImageIO.read(getClass().getResource("/Pictures/beer-cap-icon-67249.png"));
+			checkerLogo = ImageIO.read(
+				getClass().getResource("/Pictures/beer-cap-icon-67249.png"));
 			Image b = checkerLogo.getScaledInstance(150, 150, 150);
 			CRL = new ImageIcon(b);
 			
-//			settingsLogo = ImageIO.read(getClass().getResource("/Pictures/settings.png"));
+//			settingsLogo = ImageIO.read(
+//				getClass().getResource("/Pictures/settings.png"));
 //			Image c = settingsLogo.getScaledInstance(50, 50, 50);
 //			settings = new ImageIcon(c);
 			
-			background = ImageIO.read(getClass().getResource("/Pictures/Background.png"));
+			background = ImageIO.read(
+					getClass().getResource("/Pictures/Background.png"));
 			//bg = new ImageIcon(background);
 			//bg.drawImage(background, 250, 250, null);
 		} catch (IOException e) {
@@ -128,16 +132,17 @@ public class MenuPanel extends JPanel {
 		}
 	}
 	
+	/** Mouse Listener value. */
 	MouseListener listener = new MouseListener() {
 
 		@Override
-		public void mouseClicked(MouseEvent a) {
-			if(a.getSource() == chessButton) {
+		public void mouseClicked(final MouseEvent a) {
+			if (a.getSource() == chessButton) {
 				OurGUI.main(null);
 				setVisible(false);
 				GameGUI.menu.setVisible(false);
 			}
-			if(a.getSource() == checkerButton) {
+			if (a.getSource() == checkerButton) {
 				CheckerGUI.main(null);
 				setVisible(false);
 				GameGUI.menu.setVisible(false);
@@ -145,25 +150,25 @@ public class MenuPanel extends JPanel {
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent arg0) {
+		public void mouseEntered(final MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mouseExited(MouseEvent arg0) {
+		public void mouseExited(final MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mousePressed(MouseEvent arg0) {
+		public void mousePressed(final MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent arg0) {
+		public void mouseReleased(final MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}

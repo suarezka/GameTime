@@ -7,31 +7,28 @@ import gvprojects.chess.model.Player;
 
 import org.junit.Test;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * JUnit Test for the Pawn Class
- *
- * @author DaiLynn Dietz
- * @author Kaye Suarez
- * @version Mar 18, 2014
- ************************************************************/
+/**********************************************************************
+ * Test Cases for Black Pawn game pieces.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class BlackPawnTest extends ChessPieceTest {
 
 	@Override
-	protected IChessPiece make(Player p) {
+	protected final IChessPiece make(final Player p) {
 		return new Pawn(p.next());
 	}
 
 	@Override
-	protected Move getValidMove(int fromRow, int fromCol) {
+	protected final Move getValidMove(final int fromRow, final int fromCol) {
 		
 		//Checks color of pawn because pawns only 
 		//can move forward, not backwards
 		//Doesnt handle pawns at the end of the board
-		if(piece.player() == Player.BLACK){
+		if (piece.player() == Player.BLACK) {
 			return new Move(fromRow, fromCol, fromRow - 1, fromCol);
-		}else{
+		} else {
 			return new Move(fromRow, fromCol, fromRow + 1, fromCol);
 		}
 	}

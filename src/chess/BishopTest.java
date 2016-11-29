@@ -7,15 +7,12 @@ import gvprojects.chess.model.Player;
 
 import org.junit.Test;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * JUnit Test for the Bishop Class
- *
- * @author DaiLynn Dietz
- * @author Kaye Suarez
- * @version Mar 18, 2014
- ************************************************************/
+/**********************************************************************
+ * BishopTest tests the logic for Bishop game piece.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class BishopTest extends ChessPieceTest {
 
 	@Override
@@ -139,17 +136,17 @@ public class BishopTest extends ChessPieceTest {
 		
 		board[fromR][fromC] = piece;
 		
-		for(int k = 0; k < board.length; k++){
-			for(int m = 0; m < board[0].length; m++){
+		for (int k = 0; k < board.length; k++) {
+			for (int m = 0; m < board[0].length; m++) {
 				int rowDiff = Math.abs(fromR - k);
 				int colDiff = Math.abs(fromC - m);
 				
 				Move tempMove = new Move(fromR, fromC, k, m);
 				
-				if(colDiff == rowDiff && fromR != k && fromC != m){
+				if (colDiff == rowDiff && fromR != k && fromC != m) {
 					assertTrue("Loop bishop true Test",
 							piece.isValidMove(tempMove, board));
-				}else{
+				} else {
 					assertFalse("Loop bishop false Test",
 							piece.isValidMove(tempMove, board));
 				}

@@ -9,7 +9,7 @@ package checkers;
 public class NormalPiece extends GamePiece {
 
 	/** owner of piece. */
-	public Player owner;
+	private Player owner;
 
 	/** value of jumping a piece. */
 	private static final int JUMP = 2; 

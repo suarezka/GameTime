@@ -4,47 +4,45 @@ import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
 import gvprojects.chess.model.Player;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * Class to handle the behavior of a pawn
- *
- * @author DaiLynn Dietz
- * @author Kaye Suarez
- * @version Mar 18, 2014
- ************************************************************/
+/**********************************************************************
+ * Pawn class controls the Pawn game piece.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 1.0 
+ **********************************************************************/
 public class Pawn extends ChessPiece {
 	
 	/************************************************************
-	 * Constructor for Pawn Class
+	 * Constructor for Pawn Class.
 	 * 
 	 * @param p Player that owns this piece
 	 ************************************************************/
-	public Pawn(Player p) {
+	public Pawn(final Player p) {
 		super(p);
 	}
 
 	/************************************************************
-	 * Returns the piece type, pawn
+	 * Returns the piece type, pawn.
 	 * 
 	 * @return  Returns "Pawn"
 	 ************************************************************/
 	@Override
-	public String type() {
+	public final String type() {
 		return "Pawn";
 	}
 	
 	/************************************************************
-	 * Returns if is a valid move for a pawn
+	 * Returns if is a valid move for a pawn.
 	 * 
 	 * @param move Desired move
 	 * @param board Board being played on
 	 * @return  True if is a valid move for a pawn
 	 ************************************************************/
-	public boolean isValidMove(Move move, IChessPiece[][] board){
+	public final boolean isValidMove(final Move move, 
+										final IChessPiece[][] board) {
 		
 		//Consulting parent class
-		if(!super.isValidMove(move, board)){
+		if (!super.isValidMove(move, board)) {
 			return false;
 		}
 		
@@ -57,30 +55,30 @@ public class Pawn extends ChessPiece {
 		final int BLACK_START = 1;
 			
 		//Checking if is starting from colors starting row
-		if((fromR == WHITE_START && player() == Player.WHITE) || 
-				(fromR == BLACK_START && player() == Player.BLACK)){
+		if ((fromR == WHITE_START && player() == Player.WHITE) 
+				|| (fromR == BLACK_START && player() == Player.BLACK)) {
 			
 			//Seeing if move is bigger than two squares
-			if(Math.abs(fromR - toR) > 2){
+			if (Math.abs(fromR - toR) > 2) {
 				return false;
 			}
-		}else{
+		} else {
 
 			//Checking if move is bigger than one square 
 			//for not first moves
-			if(Math.abs(fromR - toR) > 1){
+			if (Math.abs(fromR - toR) > 1) {
 				return false;
 			}
 		}
 		
-		if(Math.abs(fromC - toC) > 1 ){
+		if (Math.abs(fromC - toC) > 1) {
 			return false;
 		}
 		
 		//Capture stuff
-		if(Math.abs(fromC - toC) == 1 && Math.abs(fromR - toR) == 1) {
-			if(board[toR][toC] != null && board[toR][toC].player()
-					== player().next()){
+		if (Math.abs(fromC - toC) == 1 && Math.abs(fromR - toR) == 1) {
+			if (board[toR][toC] != null && board[toR][toC].player()
+					== player().next()) {
 				return true;
 			} else {
 				return false;
@@ -92,23 +90,23 @@ public class Pawn extends ChessPiece {
 		}
 		
 		//Doesnt allow double more no row movement when attacking
-		if(Math.abs(fromC - toC) > 0 && Math.abs(fromR - toR) != 1){
+		if (Math.abs(fromC - toC) > 0 && Math.abs(fromR - toR) != 1) {
 			return false;
 		}
 		
 		//Doesnt let pieces move backwards
-		if(Player.WHITE == player() && board[fromR - 1][toC] != null){
+		if (Player.WHITE == player() && board[fromR - 1][toC] != null) {
 			return false;
 		}
-		if(Player.BLACK == player() && board[fromR + 1][toC] != null){
+		if (Player.BLACK == player() && board[fromR + 1][toC] != null) {
 			return false;
 		}
 		
 		//Backup disallowing backwards movement
-		if(Player.WHITE == player() && fromR - toR < 0){
+		if (Player.WHITE == player() && fromR - toR < 0) {
 			return false;
 		}
-		if(Player.BLACK == player() && fromR - toR > 0){
+		if (Player.BLACK == player() && fromR - toR > 0) {
 			return false;
 		}
 		

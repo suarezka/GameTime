@@ -2,7 +2,6 @@ package checkers;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 
 /************************************************
  * Creates Checker GUI for user game play.
@@ -12,6 +11,7 @@ import javax.swing.JMenuBar;
  ************************************************/
 public class CheckerGUI {
 	
+	/** JFrame for Checker GUI. */
 	public static JFrame frame;
 	
 	/***************************************
