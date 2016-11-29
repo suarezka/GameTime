@@ -83,7 +83,7 @@ public class CheckerModel implements ICheckerModel {
 	 * @return true if valid, false if not
 	 ***********************************************/
 	public final boolean isValidMove(final Move move) {
-		return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
+		return pieceAt(row, col).isValidMove(move, board);
 	}
 
 	/**************************************
@@ -92,22 +92,22 @@ public class CheckerModel implements ICheckerModel {
 	 **************************************/
 	public final void move(final Move move) {
 
-		if (pieceAt(move.fromRow, move.fromColumn) != null) {
-			//if(pieceAt(move.fromRow, move.fromColumn).isValidMove(
+		if (pieceAt(row, col) != null) {
+			//if(pieceAt(row, col).isValidMove(
 			//											move, board)) {
 			if (isValidMove(move)) {
 				System.out.println("Valid");
 
-				if (pieceAt(move.toRow, move.toColumn) == null) {
+				if (pieceAt(newR, newC) == null) {
 
 					//Move piece to new location
-					board[move.toRow][move.toColumn] 
-							= board[move.fromRow][move.fromColumn];
+					board[newR][newC] 
+							= board[row][col];
 
-					board[move.fromRow][move.fromColumn] = null;
+					board[row][col] = null;
 
 					//DOWN DIAGONAL JUMP
-					if (move.fromRow + JUMP == move.toRow) {
+					if (row + JUMP == newR) {
 						if (getCurrentPlayer() == Player.RED) {
 							grayTotal--;
 						} else {
@@ -115,17 +115,17 @@ public class CheckerModel implements ICheckerModel {
 						}
 
 						//RIGHT
-						if (move.toColumn > move.fromColumn) {
-							board[move.fromRow + 1][move.fromColumn + 1] = null;
+						if (newC > col) {
+							board[row + 1][col + 1] = null;
 
 
 							//LEFT
-						} else if (move.toColumn < move.fromColumn) {
-							board[move.fromRow + 1][move.fromColumn - 1] = null;
+						} else if (newC < col) {
+							board[row + 1][col - 1] = null;
 						}
 
 						//UP DIAGONAL JUMP
-					} else if (move.fromRow - JUMP == move.toRow) {
+					} else if (row - JUMP == newR) {
 						if (getCurrentPlayer() == Player.RED) {
 							grayTotal--;
 						} else {
@@ -133,12 +133,12 @@ public class CheckerModel implements ICheckerModel {
 						}
 
 						//RIGHT
-						if (move.toColumn > move.fromColumn) {
-							board[move.fromRow - 1][move.fromColumn + 1] = null;
+						if (newC > col) {
+							board[row - 1][col + 1] = null;
 
 							//LEFT
-						} else if (move.toColumn < move.fromColumn) {
-							board[move.fromRow - 1][move.fromColumn - 1] = null;
+						} else if (newC < col) {
+							board[row - 1][col - 1] = null;
 						}
 					}	
 

@@ -8,64 +8,56 @@ package game;
  * @version 2.0
  ***************************************************/
 public class Knight extends ChessPiece {
-
 	
-	/********************************
-	 * Create Knight piece.
-	 * @param player owner of piece.
-	 ********************************/
-	protected Knight(final Player player) {
-		super(player);
-		this.owner = player;
+	/************************************************************
+	 * Constructor for the knight class.
+	 * 
+	 * @param p Player who owns the chess Piece
+	 ************************************************************/
+	public Knight(final Player p) {
+		super(p);
 	}
 
-	/** Owner of piece. */
-	private Player owner;
-	
-	
-	/*************************
-	 * Returns type of piece.
-	 * @return type
-	 *************************/
+	/************************************************************
+	 * Returns the type of piece, knight in this case.
+	 * 
+	 * @return  Returns string of the piece type
+	 ************************************************************/
+	@Override
 	public final String type() {
 		return "Knight";
 	}
-	
-	
-	/**************************
-	 * Return owner of piece.
-	 * @return owner
-	 **************************/
-	public final Player player() {
-		return owner;
-	}
-	
-	
-	/*******************************************
-	 * Returns valid move for King.
-	 * @param move given move
-	 * @param board current board
-	 * @return true if valid, false if not
-	 ******************************************/
+
+	/************************************************************
+	 * Returns if a move is valid for a knight to make.
+	 * 
+	 * @param move The desired move to be made
+	 * @param board The game board which the piece moves on
+	 * @return  True if the move is valid
+	 ************************************************************/
 	public final boolean isValidMove(final Move move, 
-							final IChessPiece[][] board) {
+									final IChessPiece[][] board) { 
 		
-		int row = move.getCurrentRow();
-		int col = move.getCurrentCol();
-		int newR = move.getNewRow();
-		int newC = move.getNewCol();
+		//Checking with parent class
+		if (!super.isValidMove(move, board)) {
+			return false;
+		}
 		
-		if (super.isValidMove(move, board)) {
-			//checks that the move is either two(2) rows and one(1) column or 
-			//two(2) columns and one(1) row
-			if (((Math.abs(row - newR) == 2) && (Math.abs(col - newC) == 1)) 
-							|| ((Math.abs(col - newC) == 2) 
-							&& (Math.abs(row - newR) == 1))) {
+		int fromC = move.getCurrentCol();
+		int fromR = move.getCurrentRow();
+		int toC = move.getNewCol();
+		int toR = move.getNewRow();
+		
+		//Setting up arrays of valid moves for a knight to make
+		//Arrays hold coordinates of valid moves for a knight
+		final int[] COLS = {1, 2, 2, 1, -1, -2, -2, -1};
+		final int[] ROWS = {-2, -1, 1, 2, 2, 1, -1, -2};
+		
+		//Looping through coordinates to see if moves match valid coordinates
+		for (int k = 0; k < COLS.length; k++) {
+			if (toC == COLS[k] + fromC && toR == ROWS[k] + fromR) {
 				return true;
 			}
-			
-		} else {
-			return false;
 		}
 		
 		return false;

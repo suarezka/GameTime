@@ -450,7 +450,7 @@ public class CheckerPanel extends JPanel {
 												
 												model.setCurrentPiece(
 														model.pieceAt(r, c));
-												currentMove.fromRow = r;
+												currentMoverow = r;
 												currentMove.fromColumn = c;
 											}
 										}
@@ -527,7 +527,7 @@ public class CheckerPanel extends JPanel {
 //								if(model.pieceAt(r, c).player() == model.getCurrentPlayer()) {
 //									model.setCurrentPiece(model.pieceAt(r, c));
 //									currentMove = new Move(r, c, 0, 0);
-//									currentMove.fromRow = r;
+//									currentMoverow = r;
 //									currentMove.fromColumn = c;
 //								}
 //								else if(model.pieceAt(r, c).player() != model.getCurrentPlayer()) {

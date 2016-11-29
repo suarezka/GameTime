@@ -9,96 +9,64 @@ package game;
 
 public class Rook extends ChessPiece {
 
-	/** Rook hasMoved boolean. */
-	public boolean hasMoved = false;
-
-	/********************************
-	 * Sets player of piece.
-	 * @param player owner of piece
-	 ********************************/
-	protected Rook(final Player player) {
-		super(player);
-		this.owner = player;
+	/************************************************************
+	 * Constructor for the rook class.
+	 * 
+	 * @param p Player to be owning this rook
+	 ************************************************************/
+	public Rook(final Player p) {
+		super(p);
 	}
 
-	/** Owner of piece. */
-	private Player owner;
-
-
-	/************************
-	 * Return type of piece.
-	 * @return type
-	 ************************/
+	/************************************************************
+	 * Returns the type of this piece, "Rook".
+	 *  
+	 * @return  String word that describes type of piece (rook)
+	 ************************************************************/
+	@Override
 	public final String type() {
 		return "Rook";
 	}
 
-
-	/*************************
-	 * Return owner of piece.
-	 * @return owner
-	 ************************/
-	public final Player player() {
-		return owner;
-	}
-
-
-	/*******************************************
-	 * Returns valid move for Rook.
-	 * @param move given move
+	/************************************************************
+	 * Determines if a rook can make the desired move.
+	 * 
+	 * @param move Move desired to be made by rook
 	 * @param board current board
-	 * @return true if valid, false if not
-	 ******************************************/
-	public final boolean isValidMove(
-			final Move move, final IChessPiece[][] board) {
-		
-		int row = move.getCurrentRow();
-		int col = move.getCurrentCol();
-		int newR = move.getNewRow();
-		int newC = move.getNewCol();
+	 * @return  True if is valid move
+	 ************************************************************/
+	public final boolean isValidMove(final Move move, 
+										final IChessPiece[][] board) {
 
-		/*holds a step value*/
-		int stepValue = 0;	
-		//check the super 
-		if (super.isValidMove(move, board)) {
-			//check that its a valid Rook move
-			if (!(row == newR || col == newC)) {
-				return false;
-				
-			} else {
-				//check that to move is along a row
-				if (newR - row != 0) {
-					stepValue = (-(row - newR) / Math.abs(row - newR));
-					
-					
-					for (int i = (row + stepValue); 
-							 i != newR; i = i + stepValue) {
-						
-						if (board[i][col] != null) {
-							return false;
-						}
-					}
-					//hasMoved = true;
-					return true;
-					
-				} else {
-					stepValue = 
-							(-(col - newC) / Math.abs(col - newC));
-					
-					for (int i = (col + stepValue); 
-								i != newC; i = i + stepValue) {
-						
-						if (board[row][i] != null) {
-							return false;
-						}
-					}
-					//hasMoved = true;
-					return true;
-				}
-			}
-		} else {
+		//Getting move data for Rook piece
+		int fromC = move.getCurrentCol();
+		int fromR = move.getCurrentRow();
+		int toC = move.getNewCol();
+		int toR = move.getNewRow();
+
+		//Parent isValidMove method
+		if (!super.isValidMove(move, board)) {
 			return false;
 		}
+
+
+		//Check if move is either front/back or side to side
+		if (fromR != toR && fromC != toC) {
+			return false;
+		}
+
+		//Check if horizontal / vertical path is clear
+		if (!isPathClear(fromR, fromC, toR, toC, board)) {
+			return false;
+		}
+		
+		//Checks if destination contains piece that is friendly
+		if (board[toR][toC] != null 
+				&& board[toR][toC].player() == this.player()) {
+			return false;
+		}
+
+		return true;
 	}
 }
 

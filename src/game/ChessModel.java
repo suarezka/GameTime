@@ -3,6 +3,7 @@ package game;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Panel;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,816 +21,380 @@ import javax.swing.JOptionPane;
 
 public class ChessModel implements IChessModel {
 	
-	/**array to hold the board pieces*/
-	private IChessPiece[][] board;
+	//Instance Variables
 	
-	private IChessPiece[][] tempBoard;
-	
-	/**the current Player**/
-	private Player player;
-	
-	/**the current piece*/
-	public IChessPiece currentPiece;
-	public int takenBlackKnight = 0;
-	public int takenWhiteKnight = 0;
-	public int takenBlackBishop = 0;
-	public int takenWhiteBishop = 0;
-	public int takenBlackRook = 0;
-	public int takenWhiteRook = 0;
-	public int takenBlackPawn = 0;
-	public int takenWhitePawn = 0;
-	public int takenBlackQueen = 0;
-	public int takenWhiteQueen = 0;
-	public IChessPiece savior;
-	private Image bPawn;
-	private ImageIcon blackPawn;
-	//declare other instance variables as needed
-	
-	public ChessModel() {
-		board = new IChessPiece[8][8];
-		player = Player.WHITE;
-		try {
-			bPawn = ImageIO.read(getClass().getResource("/Pictures/blackPawn.png"));
-		} catch (IOException e) {
-			System.out.println(5);
+		/** Current Player. */
+		private Player curPlayer;
+		
+		/** Game in progress. */
+		private boolean gameInProgress;
+		
+		/** Game Board. */
+		private IChessPiece[][] board;
+		
+		/** Black Attack Moves. */
+		private ArrayList<Move> attackMovesB;
+		
+		/** White Attack Moves. */
+		private ArrayList<Move> attackMovesW;
+
+
+		/************************************************************
+		 * ChessModel constructor.
+		 ************************************************************/
+		public ChessModel() {
+			//Create game board
+			board = new IChessPiece[8][8];
+			curPlayer = Player.WHITE;
+			gameInProgress = true;
+			attackMovesB = new ArrayList<Move>();
+			attackMovesW = new ArrayList<Move>();
+
+			//Set black pieces on board
+			board[0][0] = new Rook(Player.BLACK);
+			board[0][1] = new Knight(Player.BLACK);
+			board[0][2] = new Bishop(Player.BLACK);
+			board[0][3] = new Queen(Player.BLACK);
+			board[0][4] = new King(Player.BLACK);
+			board[0][5] = new Bishop(Player.BLACK);
+			board[0][6] = new Knight(Player.BLACK);
+			board[0][7] = new Rook(Player.BLACK);
+			board[1][0] = new Pawn(Player.BLACK);
+			board[1][1] = new Pawn(Player.BLACK);
+			board[1][2] = new Pawn(Player.BLACK);
+			board[1][3] = new Pawn(Player.BLACK);
+			board[1][4] = new Pawn(Player.BLACK);
+			board[1][5] = new Pawn(Player.BLACK);
+			board[1][6] = new Pawn(Player.BLACK);
+			board[1][7] = new Pawn(Player.BLACK);
+
+			//Set white pieces on board
+			board[7][0] = new Rook(Player.WHITE);
+			board[7][1] = new Knight(Player.WHITE);
+			board[7][2] = new Bishop(Player.WHITE);
+			board[7][3] = new Queen(Player.WHITE);
+			board[7][4] = new King(Player.WHITE);
+			board[7][5] = new Bishop(Player.WHITE);
+			board[7][6] = new Knight(Player.WHITE);
+			board[7][7] = new Rook(Player.WHITE);
+			board[6][0] = new Pawn(Player.WHITE);
+			board[6][1] = new Pawn(Player.WHITE);
+			board[6][2] = new Pawn(Player.WHITE);
+			board[6][3] = new Pawn(Player.WHITE);
+			board[6][4] = new Pawn(Player.WHITE);
+			board[6][5] = new Pawn(Player.WHITE);
+			board[6][6] = new Pawn(Player.WHITE);
+			board[6][7] = new Pawn(Player.WHITE);
+
 		}
-		blackPawn = new ImageIcon(bPawn);
-		
-		
-		//-----back row for Black---------//
-		board[0][0] = new Rook(Player.BLACK);
-		board[0][1] = new Knight(Player.BLACK);
-		board[0][2] = new Bishop(Player.BLACK);
-		board[0][3] = new Queen(Player.BLACK);
-		board[0][4] = new King(Player.BLACK);
-		board[0][5] = new Bishop(Player.BLACK);
-		board[0][6] = new Knight(Player.BLACK);
-		board[0][7] = new Rook(Player.BLACK);
-		//---------Black pawns------------//
-		board[1][0] = new Pawn(Player.BLACK);
-		board[1][1] = new Pawn(Player.BLACK);
-		board[1][2] = new Pawn(Player.BLACK);
-		board[1][3] = new Pawn(Player.BLACK);
-		board[1][4] = new Pawn(Player.BLACK);
-		board[1][5] = new Pawn(Player.BLACK);
-		board[1][6] = new Pawn(Player.BLACK);
-		board[1][7] = new Pawn(Player.BLACK);
-		
-		//-----back row for White---------//
-		board[7][0] = new Rook(Player.WHITE);
-		board[7][1] = new Knight(Player.WHITE);
-		board[7][2] = new Bishop(Player.WHITE);
-		board[7][3] = new Queen(Player.WHITE);
-		board[7][4] = new King(Player.WHITE);
-		board[7][5] = new Bishop(Player.WHITE);
-		board[7][6] = new Knight(Player.WHITE);
-		board[7][7] = new Rook(Player.WHITE);
-		//---------White pawns------------//
-		board[6][0] = new Pawn(Player.WHITE);
-		board[6][1] = new Pawn(Player.WHITE);
-		board[6][2] = new Pawn(Player.WHITE);
-		board[6][3] = new Pawn(Player.WHITE);
-		board[6][4] = new Pawn(Player.WHITE);
-		board[6][5] = new Pawn(Player.WHITE);
-		board[6][6] = new Pawn(Player.WHITE);
-		board[6][7] = new Pawn(Player.WHITE);
-		
-		//finish
-	}
-	
-	/*****************************************************************
-	 * For the game to be over, one player must have a king in check,
-	 * be unable to move it out of check, and unable to remove the 
-	 * threat. 
-	 * @return false - game is not complete
-	 * @return true - game is complete
-	 *****************************************************************/
-	@Override
-	public boolean isComplete() {
-		for (int r = 0; r < 8; r++){ 
-			for (int c = 0; c < 8; c++){
-				for (int x = 0; x < 8; x++){ 
-					for (int y = 0; y < 8; y++){
-						savior = pieceAt(r, c);
-						if(pieceAt(r, c) != null && pieceAt(r, c).player() == currentPlayer()){
-							Move test = new Move(r,c,x,y);
-							if(isValidMove(test)){
-								return !testMove(test);
-							}
+
+		/************************************************************
+		 * Gives the current player in game.
+		 * 
+		 * @return  Current Player
+		 ************************************************************/
+		@Override
+		public final Player currentPlayer() {
+			return curPlayer;
+		}
+
+		/************************************************************
+		 * Returns if the game is in check, regardless of color.
+		 * 
+		 * @return  True if game is in check
+		 ************************************************************/
+		@Override
+		public final boolean inCheck() {
+			boolean isInCheck = false;
+
+			//Clearing arrayList to avoid
+			attackMovesB.clear();
+			attackMovesW.clear();
+
+			for (int r = 0; r < board.length; r++){
+				for (int c = 0; c < board[0].length; c++){
+
+					if (board[r][c] == null) {
+						continue;
+					}
+
+					//Checks if piece at board is a king in check
+					if (board[r][c].type().equals("King") && 
+							((King) board[r][c]).isInCheck(r, c, board)) {
+						isInCheck = true;
+
+						//Checks player color to fill appropriate array list
+						if (board[r][c].player() == Player.BLACK) {
+							attackMovesB = ((King) board[r][c]).getAttackers();
+						} else {
+							attackMovesW = ((King) board[r][c]).getAttackers();
 						}
 					}
 				}
 			}
+			return isInCheck;
 		}
-		return true;
-	}
-	
-	public boolean testMove(Move move){
-		duplicateBoard(board);
-		IChessPiece tempPiece = tempBoard[move.toRow][move.toColumn];
-		tempBoard[move.toRow][move.toColumn] = tempBoard[move.fromRow][move.fromColumn];
-		tempBoard[move.fromRow][move.fromColumn] = null;
-		if(!inCheck(player)){
-			tempBoard[move.fromRow][move.fromColumn] = tempBoard[move.toRow][move.toColumn];
-			tempBoard[move.toRow][move.toColumn] = tempPiece;
-			return false;
-		}
-			tempBoard[move.fromRow][move.fromColumn] = tempBoard[move.toRow][move.toColumn];
-			tempBoard[move.toRow][move.toColumn] = tempPiece;
-			return true;
-	}
-	
-	/****************************************************************
-	 * Asks the piece if it's a valid move.
-	 * @param move - a Move that need to be verified for validity
-	 * @return false - move is not a valid Move
-	 * @return true - move is a valid Move
-	 ****************************************************************/
-	@Override
-	public boolean isValidMove(Move move) {
-		try {
-			if(pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board)) {
-				return true;
-			}
-			else {
+
+		/************************************************************
+		 * Returns if there is a checkmate or not.
+		 * 
+		 * @return True if there is a checkmate
+		 ************************************************************/
+		@Override
+		public final boolean isComplete() {
+
+			//Checks if in check first, also as result fills
+			//array lists of attackers
+			if (!inCheck()) {
 				return false;
 			}
-		}
-		catch(NullPointerException e) {
-			JOptionPane.showMessageDialog(null, "Not a valid Move");
-			return false;
-		}
-	}
 
-	/****************************************************************
-	 * Moves the piece. 
-	 * @param move - the Move that needs to be performed
-	 ****************************************************************/
-	@Override
-	public void move(Move move) {
-		if(pieceAt(move.fromRow, move.fromColumn) != null) {
-			if(isValidMove(move)) {
-				if(currentPiece != null) {
-					if(currentPiece.type() == "Pawn") {
-						((Pawn) currentPiece).hasMoved = true;
-						currentPiece = null;
-					}
-					else if(currentPiece.type() == "Rook") {
-						((Rook) currentPiece).hasMoved = true;
-						currentPiece = null;
-					}
-					else if(currentPiece.type() == "King") {
-						((King) currentPiece).hasMoved = true;
-						currentPiece = null;
-					}
-				}
-				if(pieceAt(move.toRow, move.toColumn) != null) {
-					removePiece(pieceAt(move.toRow, move.toColumn));
-					board[move.toRow][move.toColumn] = board[move.fromRow][move.fromColumn];
-				}
-				board[move.toRow][move.toColumn] = board[move.fromRow][move.fromColumn];
-				board[move.fromRow][move.fromColumn] = null;
-				promotion();
-				setNextPlayer();
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Not a valid move.");
-			}
-		}
-	}
-	
-	/****************************************************************
-	 * Verifies if player p's King is in check
-	 * @param p - the player that need to verifiy if they are checked
-	 * @return false - if the player is not in check
-	 * @return true - if the player is in check
-	 ****************************************************************/
-	@Override
-	public boolean inCheck(Player p){
-		Move temp = new Move();
-		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 8; c++) {
-				if(board[r][c] != null) {
-					if(pieceAt(r, c).type() == "King" && pieceAt(r, c).player() == p) {
-						temp.toRow = r;
-						temp.toColumn = c;
+			//Possible king moves
+			int[] MOVE_R = {-1, -1, 0, 1, 1, 1, 0, -1};
+			int[] MOVE_C = {0, 1, 1, 1, 0, -1, -1, -1};
+
+			//Checks if black king is in check
+			if (attackMovesB.size() == 1) {
+				int kingR = attackMovesB.get(0).getNewRow();
+				int kingC = attackMovesB.get(0).getNewCol();
+
+				//Checks if king can escape
+				for (int k = 0; k < MOVE_R.length; k++) {
+
+					King piece = ((King) board[kingR][kingC]);
+					int row = MOVE_R[k] + kingR;
+					int col = MOVE_C[k] + kingC;
+
+					//Checks if king can safely move away
+					if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 
+							&& !piece.isInCheck(row, col, board)) {
+						return false;
 					}
 				}
-			}
-		}
-		for(int a = 0; a < 8; a++) {
-			for(int b = 0; b < 8; b++) {
-				if(board[a][b] != null) {
-					if(pieceAt(a, b).player() != p) {
-						temp.fromRow = a;
-						temp.fromColumn = b;
-						if(pieceAt(a, b).isValidMove(temp, board)) {
-							//attacker = pieceAt(a, b);
-							return true;
+
+				//Otherwise, checks if piece can block move
+				for (int r = 0; r < board.length; r++) {
+					for (int c = 0; c < board[0].length; c++) {
+
+						if (board[r][c] == null) {
+							continue;
 						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-
-	public boolean squareIsThreatened(int Row, int Col, Player p) {
-		for (int a = 0; a < 8; a++) {
-			for (int b = 0; b < 8; b++) {
-				if(pieceAt(a, b) != null) {
-					if(pieceAt(a, b).player() != p) {
-						Move temp = new Move(a, b, Row, Col);
-						if (pieceAt(a, b).isValidMove(temp, board))
-							return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-//	public boolean canKingMove(int row, int col, Player p) {
-//		for(int r = row-1; r <= row+1; r++) {
-//			for(int c = col-1; c <= col+1; c++) {
-//				if(r < 8 && r > -1 && c < 8 && c > -1) {
-//					if(pieceAt(r, c) != null) {
-//						if(pieceAt(r, c).player() != currentPlayer()) {
-//							if(squareIsThreatened(r, c, p) == false) {
-//								return true;
-//							}
-//							return false;
-//						}
-//					}
-//					else {
-//						if(squareIsThreatened(r, c, p) == false) {
-//							return true;
-//						}
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//
-//	public boolean canRemoveThreat(int row, int col, Player p) {
-//		IChessPiece fromSpot; 
-//		IChessPiece toSpot; 
-//		for(int r = 0; r < 8; r++) {
-//			for(int c = 0; c < 8; c++) {
-//				if(board[r][c] != null) {
-//					if(board[r][c].player() == p) {
-//						for(int x = 0; x < 8; x++) {
-//							for(int y = 0; y < 8; y++) {
-//								Move threat = new Move(r, c, x, y);
-//								if(board[r][c].isValidMove(threat, board)) {
-//									if(testMove(board, threat, p)){
-//										return true;
-//									}
-//									else {
-//										return false;
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return false;
-//	}
-	
-//	public boolean testMove(IChessPiece[][] board, Move move, Player p){
-//		
-//		IChessPiece fromPiece = board[move.fromRow][move.fromColumn];
-//		IChessPiece toPiece = board[move.toRow][move.toColumn];
-//		
-//		board[move.toRow][move.toColumn] = board[move.fromRow][move.fromColumn];
-//		board[move.fromRow][move.fromColumn] = null;
-//		if(!inCheck(p)){
-//			board[move.fromRow][move.fromColumn] = fromPiece;
-//			board[move.toRow][move.toColumn] = toPiece;
-//			return true;
-//		}
-//		else{
-//			board[move.fromRow][move.fromColumn] = fromPiece;
-//			board[move.toRow][move.toColumn] = toPiece;
-//			return false;
-//		}
-//	}
-	
-	/********************************
-	 * Handles Promotion of pieces.
-	 ********************************/
-	public void promotion() {
-		
-		for (int a = 0; a < 8; a++) {
-			if (currentPlayer() == Player.WHITE) {
-				if (pieceAt(0, a) != null && pieceAt(0, a).type() == "Pawn" 
-						&& pieceAt(0, a).player() == currentPlayer()) {
-					if (takenWhiteBishop == 0 && takenWhiteKnight == 0 
-								&& takenWhiteRook == 0) {
 						
-						JOptionPane.showMessageDialog(null, 
-								"You have not lost any pieces \n"
-								+ "You will be given a Queen");
-						board[0][a] = new Queen(Player.WHITE);
-					}
-					if (takenWhiteBishop != 0) {
-						if (takenWhiteKnight != 0) {
-							if (takenWhiteRook != 0) {
-								
-								Object[] options = {"Bishop", "Knight", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, 
-										"Please select a piece.", "Promotion", 
-										JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, 
-										blackPawn, options, options[0]);
-								
-								if(n == 0) {
-									board[0][a] = new Bishop(Player.WHITE);
-									takenWhiteBishop--;
-								}
-								if(n == 1) {
-									board[0][a] = new Knight(Player.WHITE);
-									takenWhiteKnight--;
-								}
-								if(n == 2) {
-									board[0][a] = new Rook(Player.WHITE);
-									takenWhiteRook--;
-								}
-							}
-							else {
-								Object[] options = {"Bishop", "Knight"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
-									board[0][a] = new Bishop(Player.WHITE);
-									takenWhiteBishop--;
-								}
-								if(n == 1) {
-									board[0][a] = new Knight(Player.WHITE);
-									takenWhiteKnight--;
-								}
-							}
+						if (board[r][c].player() != Player.BLACK || 
+								board[r][c].type().equals("King")) {
+							continue;
 						}
-						else{
-							if(takenWhiteRook != 0) {
-								Object[] options = {"Bishop", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
-									board[0][a] = new Bishop(Player.WHITE);
-									takenWhiteBishop--;
-								}
-								if(n == 1) {
-									board[0][a] = new Rook(Player.WHITE);
-									takenWhiteRook--;
-								}
-							}
-							else {
-								Object[] options = {"Bishop"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
-									board[0][a] = new Bishop(Player.WHITE);
-									takenWhiteBishop--;
-								}
+
+
+						//Gets path the attacking piece plans to take
+						ArrayList<Point> path = pathGetter(attackMovesB.get(0));
+
+						//Sees if piece can block attacking pieces path
+						for (Point p: path) {
+							if (board[r][c].isValidMove(new Move(r, c, 
+									(int) p.getX(), (int) p.getY()), board)) {
+								return false;
 							}
 						}
 					}
-					else {
-						if(takenWhiteKnight != 0) {
-							if(takenWhiteRook != 0) {
-								Object[] options = {"Knight", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
-									board[0][a] = new Knight(Player.WHITE);
-									takenWhiteKnight--;
-								}
-								if(n == 1) {
-									board[0][a] = new Rook(Player.WHITE);
-									takenWhiteRook--;
-								}
-							}
-							else {
-								Object[] options = {"Knight"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if(n == 0) {
-									board[0][a] = new Knight(Player.WHITE);
-									takenWhiteKnight--;
-								}
-							}
+				}
+
+				//Checks if white king is in check
+			} else if (attackMovesW.size() == 1) {
+				int kingR = attackMovesW.get(0).getNewRow();
+				int kingC = attackMovesW.get(0).getNewCol();
+
+
+				//Loops through possible king escapes
+				for (int k = 0; k < MOVE_R.length; k++) {
+
+					King piece = ((King) board[kingR][kingC]);
+					int row = MOVE_R[k] + kingR;
+					int col = MOVE_C[k] + kingC;
+
+					//Checks if move is valid and if it will take king out of check
+					if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 
+							&& !piece.isInCheck(row, col, board)) {
+						return false;
+					}
+
+				}
+
+				//Loops through board
+				for (int r = 0; r < board.length; r++) {
+					for (int c = 0; c < board[0].length; c++) {
+
+						if (board[r][c] == null) {
+							continue; 
 						}
-						else {
-							if(takenWhiteRook != 0) {
-							Object[] options = {"Rook"};
-							int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-							if(n == 0) {
-									board[0][a] = new Rook(Player.WHITE);
-									takenWhiteRook--;
-							}
+						
+						if (board[r][c].player() != Player.WHITE 
+								|| board[r][c].type().equals("King")) {
+							continue;
+						}
+
+						//Gets intended attack path
+						ArrayList<Point> path = pathGetter(attackMovesW.get(0));
+
+						//Loops through intended path and tries to block
+						for (Point p: path) {
+							if (board[r][c].isValidMove(new Move(r, c, 
+									(int) p.getX(), (int) p.getY()), board)) {
+								return false;
 							}
 						}
 					}
 				}
 			}
-			if (currentPlayer() == Player.BLACK) {
-				if (pieceAt(7, a) != null && pieceAt(7, a).type() == "Pawn" 
-						&& pieceAt(7, a).player() == currentPlayer()) {
-					if (takenBlackBishop == 0 && takenBlackKnight == 0 &&
-							takenBlackRook == 0) {
-						JOptionPane.showMessageDialog(null, "You have not lost any pieces \n"
-								+ "You will be given a Queen");
-						board[7][a] = new Queen(Player.BLACK);
-					}
-					if (takenBlackBishop != 0) {
-						if (takenBlackKnight != 0) {
-							if (takenBlackRook != 0) {
-								Object[] options = {"Bishop", "Knight", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Bishop(Player.BLACK);
-									takenBlackBishop--;
-								}
-								if (n == 1) {
-									board[7][a] = new Knight(Player.BLACK);
-									takenBlackKnight--;
-								}
-								if(n == 2) {
-									board[7][a] = new Rook(Player.BLACK);
-									takenBlackRook--;
-								}
-								
-							} else {
-								Object[] options = {"Bishop", "Knight"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Bishop(Player.BLACK);
-									takenBlackBishop--;
-								}
-								if (n == 1) {
-									board[7][a] = new Knight(Player.BLACK);
-									takenBlackKnight--;
-								}
-							}
-							
-						} else {
-							if (takenBlackRook != 0) {
-								Object[] options = {"Bishop", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Bishop(Player.BLACK);
-									takenBlackBishop--;
-								}
-								if (n == 1) {
-									board[7][a] = new Rook(Player.BLACK);
-									takenBlackRook--;
-								}
-							} else {
-								Object[] options = {"Bishop"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Bishop(Player.BLACK);
-									takenBlackBishop--;
-								}
-							}
-						}
-					} else {
-						if (takenBlackKnight != 0) {
-							if (takenBlackRook != 0) {
-								Object[] options = {"Knight", "Rook"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Knight(Player.BLACK);
-									takenBlackKnight--;
-								}
-								if (n == 1) {
-									board[7][a] = new Rook(Player.BLACK);
-									takenBlackRook--;
-								}
-							} else {
-								Object[] options = {"Knight"};
-								int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Knight(Player.BLACK);
-									takenBlackKnight--;
-								}
-							}
-						} else {
-							if (takenBlackRook != 0) {
-							Object[] options = {"Rook"};
-							int n = JOptionPane.showOptionDialog(null, "Please select a piece.", "Promotion", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, blackPawn, options, options[0]);
-								if (n == 0) {
-									board[7][a] = new Rook(Player.BLACK);
-									takenBlackRook--;
-								}
-							}
-						}
-					}
-				}
-			}
+
+			gameInProgress = false;
+			return true;
 		}
-	}
-	
-	public void castling(String x) {
-		if(currentPlayer() == Player.WHITE) {
-			if(x.equals("Right")) {
-				if(board[7][4].type() == "King") {
-					IChessPiece tempKing = board[7][4];
-					if(((King) tempKing).hasMoved == false) {
-						if(board[7][7].type() == "Rook") {
-							IChessPiece tempRook = board[7][7];
-							if(((Rook) tempRook).hasMoved == false) {
-								if(board[7][6] == null && board[7][5] == null) {
-									//put in check to watch for checkmate before movement
-									board[7][6] = board[7][4];
-									board[7][4] = null;
-									board[7][5] = board[7][7];
-									board[7][7] = null;
-									setNextPlayer();
-								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-							}
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-				}
+
+
+		/************************************************************
+		 * Gets the path traveled by the attacking piece.
+		 * 
+		 * @param move Intended move by attacking piece
+		 * @return  ArrayList of points along path
+		 ************************************************************/
+		private ArrayList<Point> pathGetter(final Move move) {
+			ArrayList<Point> path = new ArrayList<Point>();
+
+			int fromR = move.getCurrentRow();
+			int fromC = move.getCurrentCol();
+			int toR = move.getNewRow();
+			int toC = move.getNewCol();
+
+			//Checking if the methods of ChessPiece can be used
+			if (board[fromR][fromC].type().equals("Queen") 
+					|| board[fromR][fromC].type().equals("Rook") 
+					|| board[fromR][fromC].type().equals("Bishop")) {
+
+				//			board[fromR][fromC].isValidMove(move, board);
+				((ChessPiece) board[fromR][fromC]).isPathClear(
+						fromR, fromC, toR, toC, board);
+				path = ((ChessPiece) board[fromR][fromC]).getPiecePath();
+
+				//Checking if piece has no path, and just needs
+				//to be removed to block
+			} else if (board[fromR][fromC].type().equals("Pawn") 
+					|| board[fromR][fromC].type().equals("Knight")) {
+				path.add(new Point(fromR, fromC));
+
+				//Else case is for kings which don't attack.
+			} else {
+				path = null;
 			}
-			if(x.equals("Left")) {
-				if(board[7][4].type() == "King") {
-					IChessPiece tempKing = board[7][4];
-					if(((King) tempKing).hasMoved == false) {
-						if(board[7][0].type() == "Rook") {
-							IChessPiece tempRook = board[7][0];
-							if(((Rook) tempRook).hasMoved == false) {
-								if(board[7][2] == null && board[7][3] == null) {
-									board[7][2] = board[7][4];
-									board[7][4] = null;
-									board[7][3] = board[7][0];
-									board[7][0] = null;
-									setNextPlayer();
-								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-							}
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-				}
-			}
+
+			return path;
 		}
-		if(currentPlayer() == Player.BLACK) {
-			if(x.equals("Right")) {
-				if(board[0][4].type() == "King") {
-					IChessPiece tempKing = board[0][4];
-					if(((King) tempKing).hasMoved == false) {
-						if(board[0][0].type() == "Rook") {
-							IChessPiece tempRook = board[0][0];
-							if(((Rook) tempRook).hasMoved == false) {
-								if(board[0][2] == null && board[0][3] == null) {
-									board[0][2] = board[0][4];
-									board[0][4] = null;
-									board[0][3] = board[0][0];
-									board[0][0] = null;
-									setNextPlayer();
-								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-							}
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-				}
-			}
-			if(x.equals("Left")) {
-				if(board[0][4].type() == "King") {
-					IChessPiece tempKing = board[0][4];
-					if(((King) tempKing).hasMoved == false) {
-						if(board[0][7].type() == "Rook") {
-							IChessPiece tempRook = board[0][7];
-							if(((Rook) tempRook).hasMoved == false) {
-								if(board[0][6] == null && board[0][5] == null) {
-									board[0][6] = board[0][4];
-									board[0][4] = null;
-									board[0][5] = board[0][7];
-									board[0][7] = null; 
-									setNextPlayer();
-								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-							}
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "You cannot castle at this time.");
-				}
-			}
-		}
-	}
-	
-	/****************************************************************
-	 * The current Player
-	 * @return currentPlayer() - current player
-	 ****************************************************************/
-	@Override
-	public Player currentPlayer() {
-		return player;
-	}
-	
-	/****************************************************************
-	 * Stores the number of pieces that are removed.
-	 * @param x - IChessPiece that is to be removed
-	 ****************************************************************/
-	public void removePiece(IChessPiece x) {
-		if (x.player() == Player.WHITE) {
-			if (x.type() == "Knight") {
-				takenWhiteKnight++;
-			} 
-			else if (x.type() == "Rook") {
-				takenWhiteRook++;
-			} 
-			else if (x.type() == "Bishop") {
-				takenWhiteBishop++;
-			}
-			else if(x.type() == "Pawn") {
-				takenWhitePawn++;
-			}
-			else if(x.type() == "Queen") {
-				takenWhiteQueen++;
-			}
-		} else if (x.player() == Player.BLACK) {
-			if (x.type() == "Knight") {
-				takenBlackKnight++;
-			} 
-			else if (x.type() == "Rook") {
-				takenBlackRook++;
-			} 
-			else if (x.type() == "Bishop") {
-				takenBlackBishop++;
-			}
-			else if(x.type() == "Pawn") {
-				takenBlackPawn++;
-			}
-			else if(x.type() == "Queen") {
-				takenBlackQueen++;
-			}
-		}
-	}
-	
-	/**number of rows*/
-	public int numRows() {
-		return 8;
-	}
-	/**number of columns*/
-	public int numColumns() {
-		return 8;
-	}
-	
-	public IChessPiece pieceAt(int row, int column) {
-		return board[row][column];
-	}
-	
-	public void setNextPlayer() {
-		player = player.next();
-	}
-	
-	public void setPlayer(Player p) {
-		player = p;
-	}
-	
-	public void setCurrentPiece(IChessPiece p) {
-		currentPiece = p;
-	}
-	
-	public IChessPiece getCurrentPiece() {
-		return currentPiece;
-	}
 
-	public int getTakenBlackKnight() {
-		return takenBlackKnight;
-	}
+		/************************************************************
+		 * isValidMove for model, returns if  a move is valid.
+		 * 
+		 * @param move Move being checked for validity
+		 * @return  True if move is valid
+		 ************************************************************/
+		@Override
+		public final boolean isValidMove(final Move move) {
 
-	public int getTakenWhiteKnight() {
-		return takenWhiteKnight;
-	}
+			int toR = move.getNewRow();
+			int toC = move.getNewCol();
+			int fromR = move.getCurrentRow();
+			int fromC = move.getCurrentCol();
 
-	public int getTakenBlackBishop() {
-		return takenBlackBishop;
-	}
+			//Doesnt allow pieces to move out of turn
+			if (board[fromR][fromC] == null) {
+				return false;
+			}
+			
+			if (board[fromR][fromC].player() != currentPlayer()) {
+				return false;
+			}
 
-	public int getTakenWhiteBishop() {
-		return takenWhiteBishop;
-	}
+			//Doesnt allow invalid moves for piece behavior
+			if (!board[fromR][fromC].isValidMove(move, board)) {
+				return false;
+			}
 
-	public int getTakenBlackRook() {
-		return takenBlackRook;
-	}
+			//If game is in check, tries to move pieces out of check
+			if (inCheck()) {
+				ArrayList<Point> path;
 
-	public int getTakenWhiteRook() {
-		return takenWhiteRook;
-	}
-	
-	public int getTakenBlackQueen() {
-		return takenBlackQueen;
-	}
-	
-	public int getTakenWhiteQueen() {
-		return takenWhiteQueen;
-	}
-	
-	public void duplicateBoard(IChessPiece[][] masterBoard){
-
-		tempBoard = new IChessPiece[8][8];
-
-		for (int r = 0; r < 8; r++){
-			for (int c = 0; c < 8; c++) {
-				if (board[r][c] != null) {
-					if(board[r][c].player() == Player.BLACK){
-						if(board[r][c].type() == "King"){
-						}
-						else if(board[r][c].type() == "Queen"){
-							tempBoard[r][c] = new Queen(Player.BLACK);
-						}
-						else if(board[r][c].type() == "Rook"){
-							tempBoard[r][c] = new Rook(Player.BLACK);
-						}
-						else if(board[r][c].type() == "Bishop"){
-							tempBoard[r][c] = new Bishop(Player.BLACK);
-						}
-						else if(board[r][c].type() == "Knight"){
-							tempBoard[r][c] = new Knight(Player.BLACK);
-						}
-						else if(board[r][c].type() == "Pawn"){
-							tempBoard[r][c] = new Pawn(Player.BLACK);
-						}
-						else if(board[r][c] == null){
-							tempBoard[r][c] = null;
-						}
+				//Sets path to appropriate attacking path
+				if (Player.BLACK == curPlayer && !attackMovesB.isEmpty()) {
+					path = pathGetter(attackMovesB.get(0));	
 					
+				} else if (Player.WHITE == curPlayer && !attackMovesW.isEmpty()) {
+					path = pathGetter(attackMovesW.get(0));
+					
+				} else {
+					return true;
+				}
+
+				//Checks if king can move away
+				if (board[fromR][fromC].type().equals("King")) {
+					if (((King) board[fromR][fromC]).isInCheck(toR, toC, board)) { 
+						return false;
 					}
-					else if(board[r][c].player() == Player.WHITE){
-						if(board[r][c].type() == "King"){
-							tempBoard[r][c] = new King(Player.WHITE);
-						}
-						else if(board[r][c].type() == "Queen"){
-							tempBoard[r][c] = new Queen(Player.WHITE);
-						}
-						else if(board[r][c].type() == "Rook"){
-							tempBoard[r][c] = new Rook(Player.WHITE);
-						}
-						else if(board[r][c].type() == "Bishop"){
-							tempBoard[r][c] = new Bishop(Player.WHITE);
-						}
-						else if(board[r][c].type() == "Knight"){
-							tempBoard[r][c] = new Knight(Player.WHITE);
-						}
-						else if(board[r][c].type() == "Pawn"){
-							tempBoard[r][c] = new Pawn(Player.WHITE);
-						}
-						else if(board[r][c] == null){
-							tempBoard[r][c] = null;
-						}
-					}
+
+					//Checks if piece intends to move into block attack
+				} else if (!path.contains(new Point(toR, toC))) {
+					return false;
 				}
 			}
+			return true;
 		}
-	}
-	
-	//add other public or helper methods as needed
+
+		/************************************************************
+		 * Method to actually move pieces around on the board.
+		 * 
+		 * @param move Desired move to be made
+		 ************************************************************/
+		@Override
+		public final void move(final Move move) {
+			if (!isValidMove(move)) {
+				throw new IllegalArgumentException("Not a valid move");
+			}
+			
+			int fromC = move.getCurrentCol();
+			int fromR = move.getCurrentRow();
+			int toC = move.getNewCol();
+			int toR = move.getNewRow();
+
+			board[toR][toC] = board[fromR][fromC];
+			board[fromR][fromC] = null;
+			curPlayer = curPlayer.next();
+		}
+
+		/************************************************************
+		 * Returns the number of columns in board[][].
+		 * 
+		 * @return  Length of board[0]
+		 ************************************************************/
+		public final int numColumns() {
+			return board[0].length;
+		}
+
+		/************************************************************
+		 * Returns the number of rows in board[][].
+		 * 
+		 * @return  Length of board
+		 ************************************************************/
+		public final int numRows() {
+			return board.length;
+		}
+
+		/************************************************************
+		 * returns piece at the given location on the board.
+		 * 
+		 * @param row Row where piece is found
+		 * @param col Column where piece is found
+		 * @return  IChessPiece from the board at desired location
+		 ************************************************************/
+		public final IChessPiece pieceAt(final int row, final int col) {
+			return board[row][col];
+		}
 
 }

@@ -9,159 +9,62 @@ package game;
 
 public class Queen extends ChessPiece {
 	
-	/** Player of piece. */
-	private Player owner;
-
-	
-	/********************************
-	 * Sets owner of piece.
-	 * @param player owner of piece.
-	 ********************************/
-	protected Queen(final Player player) {
-		super(player);
-		this.owner = player;
+	/************************************************************
+	 * Constructor for the Queen class.
+	 * 
+	 * @param p Player that owns this piece
+	 ************************************************************/
+	public Queen(final Player p) {
+		super(p);
 	}
 
-	
-	/*************************
-	 * Returns type of piece.
-	 * @return type
-	 *************************/
+	/************************************************************
+	 * Returns the type of piece this is, which is Queen.
+	 * 
+	 * @return  Returns "Queen"
+	 ************************************************************/
+	@Override
 	public final String type() {
 		return "Queen";
 	}
 	
-	/**************************
-	 * Return owner of piece.
-	 * @return owner
-	 **************************/
-	public final Player player() {
-		return owner;
-	}
+	/**************************************************************
+	 * Returns whether or not a move is valid for the queen piece.
+	 * 
+	 * @param move Desired move
+	 * @param board Board played on
+	 * @return  True if the move is valid for a queen
+	 **************************************************************/
+	public final boolean isValidMove(final Move move, 
+										final IChessPiece[][] board) {
 	
-	
-	/*******************************************
-	 * Returns valid move for Queen.
-	 * @param move given move
-	 * @param board current board
-	 * @return true if valid, false if not
-	 ******************************************/
-	public final boolean isValidMove(
-				final Move move, final IChessPiece[][] board) {
-		
-		if (!(super.isValidMove(move, board))) {
+		//Checking with parent class
+		if (!super.isValidMove(move, board)) {
 			return false;
 		}
 		
-		int row = move.getCurrentRow();
-		int col = move.getCurrentCol();
-		int newR = move.getNewRow();
-		int newC = move.getNewCol();
-		
-		if (!(Math.abs(row - newR) 
-				== Math.abs(col - newC))) {
-			if (!(row == newR 
-					|| col == newC)) {
+		//Getting move data for Queen piece
+		int fromC = move.getCurrentCol();
+		int fromR = move.getCurrentRow();
+		int toC = move.getNewCol();
+		int toR = move.getNewRow();
+
+		//Check if move is either front/back or side to side
+		if (fromR != toR && fromC != toC) {
+			//makes sure its a true diagonal path
+			if (Math.abs(fromC - toC) != Math.abs(fromR - toR)) {
 				return false;
 			}
 		}
 		
-		if (newR > row) {
-			
-			//SOUTHEAST
-			if (newC > col) {
-				for (int j = row + 1, i = col + 1; 
-						j != newR && i != newC; j++, i++) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-			
-			//SOUTH
-			if (newC == col) {
-				for (int i = row + 1; i != newR; i++) {
-					
-					if (board[i][col] != null) {
-						return false;
-					}
-				}
-			}
-			
-			//SOUTHWEST
-			if (newC < col) {
-				for (int j = row + 1, 
-						i = col - 1; 
-						j != newR && i != newC; j++, i--) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-		}
-		if (newR < row) {
-			
-			//NORTHWEST
-			if (newC > col) {
-				for (int j = row - 1, 
-						i = col + 1; 
-						j != newR && i != newC; j--, i++) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-			
-			//NORTH
-			if (newC == col) {
-				
-				for (int i = newR + 1; 
-						i != row; i++) {
-					
-					if (board[i][col] != null) {
-						return false;
-					}
-				}
-			}
-			
-			//NORTHWEST
-			if (newC < col) {
-				for (int j = row - 1, 
-						i = col - 1; 
-						j != newR && i != newC; j--, i--) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
+		
+		
+		//Check horizontal and vertical path
+		if (!isPathClear(fromR, fromC, toR, toC, board)) {
+			return false;
 		}
 		
-		if (newR == row) {
-			
-			//EAST
-			if (newC > col) {
-				for (int i = col + 1; i != newC; i++) {
-					if (board[row][i] != null) {
-						return false;
-					}
-				}
-			}
-			
-			//WEST
-			if (newC < col) {
-				for (int i = newC + 1; i != col; i++) {
-					if (board[row][i] != null) {
-						return false;
-					}
-				}
-			}
-		}
 		return true;
 	}
-
 }
 

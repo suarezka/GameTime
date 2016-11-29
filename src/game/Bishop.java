@@ -8,111 +8,57 @@ package game;
  * @version 2.0
  ***************************************************/
 public class Bishop extends ChessPiece {
-	
-	/** Player. */
-	private Player owner;
-	
-	
-	/*******************************
-	 * Sets owner of piece. 
-	 * @param player owner of piece
-	 *******************************/
-	protected Bishop(final Player player) {
-		super(player);
-		this.owner = player;
+	/************************************************************
+	 * Constructor for the Bishop Class.
+	 * 
+	 * @param p Player that owns this piece
+	 ************************************************************/
+	public Bishop(final Player p) {
+		super(p);
 	}
-	
-	
-	/*************************
-	 * Returns type of piece.
-	 * @return type
-	 *************************/
+
+	/************************************************************
+	 * Returns that this piece is a Bishop.
+	 * 
+	 * @return  Returns word Bishop in string form
+	 ************************************************************/
+	@Override
 	public final String type() {
 		return "Bishop";
 	}
-	
-	
-	/*************************
-	 * Returns owner of piece.
-	 * @return owner
-	 *************************/
-	public final Player player() {
-		return owner;
-	}
-	
-	
-	/***************************************
-	 * Checks valid Bishop piece moves.
-	 * @param move new bishop position
-	 * @param board current board
-	 * @return true if valid, false if not
-	 ***************************************/
+
+	/************************************************************
+	 * Returns if this is a valid move for a Bishop or not.
+	 * 
+	 * @param move Desired move
+	 * @param board Board being played on
+	 * @return  True if is a valid move
+	 ************************************************************/
 	public final boolean isValidMove(final Move move, 
-								final IChessPiece[][] board) {
-		
-		int row = move.getCurrentRow();
-		int col = move.getCurrentCol();
-		int newR = move.getNewRow();
-		int newC = move.getNewCol();
-		
-		
-		if (!(super.isValidMove(move, board))) {
+									final IChessPiece[][] board) {
+
+		//Consulting parent class
+		if (!super.isValidMove(move, board)){
+			return false;
+		}
+
+		//Getting move data for Rook piece
+		int fromC = move.getCurrentCol();
+		int fromR = move.getCurrentRow();
+		int toC = move.getNewCol();
+		int toR = move.getCurrentRow();
+
+
+		//makes sure its a true diagonal path
+		if (Math.abs(fromC - toC) != Math.abs(fromR - toR)){
 			return false;
 		}
 		
-		if (!(Math.abs(row - newR)
-				== Math.abs(col - newC))) {
+		//Check if diagonal path is clear
+		if (!isPathClear(fromR, fromC, toR, toC, board)) {
 			return false;
 		}
-		
-		if (newR > row) {
-			//top right
-			if (newC > col) {
-				for (int j = row + 1, 
-						i = col + 1; 
-						j != newR && i != newC; j++, i++) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-			//bottom right
-			if (newC < col) {
-				for (int j = row + 1, 
-						i = col - 1; 
-						j != newR && i != newC; j++, i--) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-		}
-		if (newR < row) {
-			//top left
-			if (newC > col) {
-				for (int j = row - 1, 
-						i = col + 1;
-						j != newR && i != newC; j--, i++) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-			//bottom left
-			if (newC < col) {
-				for (int j = row - 1, 
-						i = col - 1; 
-						j != newR && i != newC; j--, i--) {
-					
-					if (board[j][i] != null) {
-						return false;
-					}
-				}
-			}
-		}
+
 		return true;
 	}
 }

@@ -1,8 +1,5 @@
 package game;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
 /***************************************************
  * Class for Pawn Chess Piece.
  *
@@ -11,186 +8,106 @@ import javax.swing.JLabel;
  ***************************************************/
 public class Pawn extends ChessPiece {
 
-	/** Player of piece. */
-	private Player owner;
-
-	/** Piece has moved. */
-	public boolean hasMoved = false;
-
-	/***************************
-	 * Create Pawn piece.
-	 * @param player of piece
-	 ***************************/
-	protected Pawn(final Player player) {
-		super(player);
-		this.owner = player;
+	/************************************************************
+	 * Constructor for Pawn Class.
+	 * 
+	 * @param p Player that owns this piece
+	 ************************************************************/
+	public Pawn(final Player p) {
+		super(p);
 	}
 
-	/************************
-	 * Return type of piece.
-	 * @return type 
-	 ************************/
+	/************************************************************
+	 * Returns the piece type, pawn.
+	 * 
+	 * @return  Returns "Pawn"
+	 ************************************************************/
+	@Override
 	public final String type() {
 		return "Pawn";
 	}
 
-	/****************************
-	 * Returns player of piece.
-	 * @return owner of piece
-	 ****************************/
-	public final Player player() {
-		return owner;
-	}
+	/************************************************************
+	 * Returns if is a valid move for a pawn.
+	 * 
+	 * @param move Desired move
+	 * @param board Board being played on
+	 * @return  True if is a valid move for a pawn
+	 ************************************************************/
+	public final boolean isValidMove(final Move move, 
+										final IChessPiece[][] board) {
 
-	/*******************************************
-	 * Returns valid move for Pawn.
-	 * @param move given move
-	 * @param board current board
-	 * @return true if valid, false if not
-	 ******************************************/
-	public final boolean isValidMove(
-			final Move move, final IChessPiece[][] board) {
-		
-		int row = move.getCurrentRow();
-		int col = move.getCurrentCol();
-		int newR = move.getNewRow();
-		int newC = move.getNewCol();
+		//Consulting parent class
+		if (!super.isValidMove(move, board)) {
+			return false;
+		}
 
-		if (super.isValidMove(move, board)) {
-			if (board[row][col].player() == Player.BLACK) {
-				if (row < 7) {
-					//check if blocked
-					if (board[row + 1][col] != null) {
-						//check for attack
-						if (newR - row == 1 && Math.abs(col - newC) == 1) {
+		int fromC = move.getCurrentCol();
+		int fromR = move.getCurrentRow();
+		int toC = move.getNewCol();
+		int toR = move.getNewRow();
 
-							//check for enemy piece
-							if (board[newR][newC] != null && board[newR]
-											[newC].player() == Player.WHITE) {
+		final int WHITE_START = 6;
+		final int BLACK_START = 1;
 
-								return true;
-							}
-							return false;
-						}
-						return false;
-					} else if (hasMoved) {
-						//black normal move
-						if ((newR - row == 1) && col == newC) {
-							return true;
+		//Checking if is starting from colors starting row
+		if ((fromR == WHITE_START && player() == Player.WHITE) 
+				|| (fromR == BLACK_START && player() == Player.BLACK)) {
 
-							//black attack after hasMoved	
-						} else if (newR - row == 1 
-								&& Math.abs(newC 
-										- col) == 1) {
-
-							if (board[newR][newC] != null && board[newR]
-									 		[newC].player() == Player.WHITE) {
-								return true;
-							}
-							return false;
-						}
-						return false;
-
-					} else {
-						//black first move
-						if ((newR - row == 2 || newR - row == 1) 
-											 && newC == col) {
-							
-							//hasMoved = true;
-							return true;
-
-
-							//black attack first move
-						} else if (newR - row == 1 
-									&& Math.abs(newC - col) == 1) {
-
-							if (board[newR][newC] != null && board[newR]
-											[newC].player() == Player.WHITE) {
-								//hasMoved = true;
-								return true;
-							}
-							return false;
-						}
-						return false;
-					}
-				} else {
-					if (row > 0) {
-						//check if blocked
-						if (board[row - 1][col] != null) {
-							//check for attack
-							if (row - newR == 1 
-									&& Math.abs(col - newC) == 1) {
-
-								//check for enemy piece
-								if (board[newR][newC] != null && board[newR]
-											[newC].player() == Player.BLACK) {
-									
-									return true;
-								}
-								return false;
-							}
-							return false;
-							
-						} else if (hasMoved) {
-							
-							//white normal move
-							if ((row - newR == 1) && col == newC) {
-								return true;
-								
-								//white attack
-							} else if (row - newR == 1 
-									&& Math.abs(col - newC) == 1) {
-								
-								 //TODO: ADD STATEMENT??
-							}
-								if (board[newR][newC] != null && board[newR]
-											[newC].player() == Player.BLACK) {
-									return true;
-								}
-								return false;
-							}
-							return false;
-						} else {
-							//white first move
-							if ((row - newR == 2 || row - newR == 1) 
-											&& newC == col) {
-								
-								//hasMoved = true;
-								return true;
-								
-							} else if (row - newR == 1 
-										&& Math.abs(col - newC) == 1) {
-								
-								if (board[newR][newC] != null && board[newR]
-											[newC].player() == Player.BLACK) {
-									
-									//hasMoved = true;
-									return true;
-								}
-								return false;
-							}
-							return false;
-						}
-					}
-				}
+			//Seeing if move is bigger than two squares
+			if (Math.abs(fromR - toR) > 2) {
+				return false;
 			}
-		
-		return false;
+			
+		} else {
+
+			//Checking if move is bigger than one square 
+			//for not first moves
+			if (Math.abs(fromR - toR) > 1) {
+				return false;
+			}
+		}
+
+		if (Math.abs(fromC - toC) > 1) {
+			return false;
+		}
+
+		//Capture stuff
+		if (Math.abs(fromC - toC) == 1 && Math.abs(fromR - toR) == 1) {
+			if (board[toR][toC] != null && board[toR][toC].player()
+					== player().next()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (board[toR][toC] != null) {
+			return false;
+		}
+
+		//Doesnt allow double more no row movement when attacking
+		if (Math.abs(fromC - toC) > 0 && Math.abs(fromR - toR) != 1) {
+			return false;
+		}
+
+		//Doesnt let pieces move backwards
+		if (Player.WHITE == player() && board[fromR - 1][toC] != null) {
+			return false;
+		}
+		if (Player.BLACK == player() && board[fromR + 1][toC] != null) {
+			return false;
+		}
+
+		//Backup disallowing backwards movement
+		if (Player.WHITE == player() && fromR - toR < 0) {
+			return false;
+		}
+		if (Player.BLACK == player() && fromR - toR > 0) {
+			return false;
+		}
+
+		return true;
 	}
 
-	/*****************************
-	 * Return hasMoved value.
-	 * @return hasMoved value
-	 *****************************/
-	public final boolean getHasMoved() {
-		return hasMoved;
-	}
-
-	/*****************************
-	 * Set hasMoved value.
-	 * @param value value
-	 *****************************/
-	public final void setHasMoved(final boolean value) {
-		this.hasMoved = value;
-	}
 }
