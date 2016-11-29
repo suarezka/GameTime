@@ -1,10 +1,5 @@
 package chess.GUI;
 
-import gvprojects.chess.model.IChessModel;
-import gvprojects.chess.model.IChessPiece;
-import gvprojects.chess.model.Move;
-import gvprojects.chess.model.Player;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +7,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,19 +20,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import project3.ChessModel;
+import chess.ChessModel;
+import gvprojects.chess.model.IChessModel;
+import gvprojects.chess.model.IChessPiece;
+import gvprojects.chess.model.Move;
+import gvprojects.chess.model.Player;
 
-/************************************************************
- * CIS 163-07
- * Chess Project
- * GUI For the chess game
- *
- * @author Kaye Suarez
- * @author DaiLynn Dietz
- * @version Mar 18, 2014
- ************************************************************/
+
 public class OurGUI implements ActionListener {
-	
 	private JFrame frame;
 	private JPanel panel;
 	private ButtonListener bl;
@@ -47,8 +39,35 @@ public class OurGUI implements ActionListener {
 	private IChessModel game;
 	private int firstR, firstC, secondR, secondC;
 	
-	private static final int IMAGE_SIZE = 64;
+	private Image bPawn;
+	private Image wPawn;
+	private Image bRook;
+	private Image wRook;
+	private Image bKnight;
+	private Image wKnight;
+	private Image bBishop;
+	private Image wBishop;
+	private Image bQueen;
+	private Image wQueen;
+	private Image bKing;
+	private Image wKing;
 	
+	//ImageIcons
+	private ImageIcon blackPawn;
+	private ImageIcon whitePawn;
+	private ImageIcon blackRook;
+	private ImageIcon whiteRook;
+	private ImageIcon blackKnight;
+	private ImageIcon whiteKnight;
+	private ImageIcon blackBishop;
+	private ImageIcon whiteBishop;
+	private ImageIcon blackQueen;
+	private ImageIcon whiteQueen;
+	private ImageIcon blackKing;
+	private ImageIcon whiteKing;
+	
+	private static final int IMAGE_SIZE = 64;
+/**		
 	//Images for black pieces
 	private ImageIcon b_Rook = loadIcon("images\\b_rook.png"),
 			b_Knight = loadIcon("images\\b_knight.png"),
@@ -64,15 +83,15 @@ public class OurGUI implements ActionListener {
 			w_Queen = loadIcon("images\\w_queen.png"),
 			w_King = loadIcon("images\\w_king.png"),
 			w_Pawn = loadIcon("images\\w_pawn.png");
-	
+*/		
 	
 	/************************************************************
-	 * GUI constructor
+	 * GUI constructor.
 	 ************************************************************/
 	public OurGUI() {
 		
 		firstR = firstC = -1;
-		frame = new JFrame("CIS 163 CHESS");
+		frame = new JFrame("CHESS....CHESSECKERSZ!");
 		panel = new JPanel();
 		bl = new ButtonListener();
 		
@@ -91,7 +110,7 @@ public class OurGUI implements ActionListener {
 	}
 	
 	/****************************************************************
-	 * Set pieces in the starting positions
+	 * Set pieces in the starting positions.
 	 * 
 	 * @param board 2D JButton array
 	 ****************************************************************/
@@ -124,62 +143,100 @@ public class OurGUI implements ActionListener {
 		
 		//Create new game
 		game = new ChessModel();
-		
+	
+		addIcons();
 		//Loops through board and sets icons on JButtons
-		for(int r = 0; r < game.numRows(); r++){
-			for(int c = 0; c < game.numColumns(); c++){
+		for (int r = 0; r < game.numRows(); r++) {
+			for (int c = 0; c < game.numColumns(); c++) {
 				
 				//Doesn't pass a blank piece through
-				if(game.pieceAt(r, c) != null){
-					chessBoard[r][c].setIcon(findIcon(game.pieceAt(r,c)));
+				if (game.pieceAt(r, c) != null) {
+					chessBoard[r][c].setIcon(findIcon(game.pieceAt(r, c)));
 				}
 			}
+		}
+		
+	}
+	
+	private void addIcons() {
+		try {
+			
+			bPawn = ImageIO.read(getClass().getResource("/Pictures/blackPawn.png"));
+			wPawn = ImageIO.read(getClass().getResource("/Pictures/whitePawn.png"));
+			bRook = ImageIO.read(getClass().getResource("/Pictures/blackRook.png"));
+			wRook = ImageIO.read(getClass().getResource("/Pictures/whiteRook.png"));
+			bKnight = ImageIO.read(getClass().getResource("/Pictures/blackKnight.png"));
+			wKnight = ImageIO.read(getClass().getResource("/Pictures/whiteKnight.png"));
+			bBishop = ImageIO.read(getClass().getResource("/Pictures/blackBishop.png"));
+			wBishop = ImageIO.read(getClass().getResource("/Pictures/whiteBishop.png"));
+			bQueen = ImageIO.read(getClass().getResource("/Pictures/blackQueen.png"));
+			wQueen = ImageIO.read(getClass().getResource("/Pictures/whiteQueen.png"));
+			bKing = ImageIO.read(getClass().getResource("/Pictures/blackKing.png"));
+			wKing = ImageIO.read(getClass().getResource("/Pictures/whiteKing.png"));
+			
+		} catch (IOException e) {
+			System.out.println("5");
+		} finally {
+			
+			blackPawn = new ImageIcon(bPawn);
+			whitePawn = new ImageIcon(wPawn);
+			blackRook = new ImageIcon(bRook);
+			whiteRook = new ImageIcon(wRook);
+			blackKnight = new ImageIcon(bKnight);
+			whiteKnight = new ImageIcon(wKnight);
+			blackBishop = new ImageIcon(bBishop);
+			whiteBishop = new ImageIcon(wBishop);
+			blackQueen = new ImageIcon(bQueen);
+			whiteQueen = new ImageIcon(wQueen);
+			blackKing = new ImageIcon(bKing);
+			whiteKing = new ImageIcon(wKing);
+			
 		}
 	}
 	
 	/************************************************************
-	 * Helper to take a piece and determine it's proper icon
+	 * Helper to take a piece and determine it's proper icon.
 	 * 
 	 * @param piece Piece that needs icon
 	 * @return  Proper ImageIcon for piece
 	 ************************************************************/
-	private ImageIcon findIcon(IChessPiece piece){
+	private ImageIcon findIcon(final IChessPiece piece) {
 		String imageName = "";
 		ImageIcon icon;
 		
 		//determines what color piece is
-		if(piece.player() == Player.WHITE){
-			imageName += "w_";
-		}else{
-			imageName += "b_";
+		if (piece.player() == Player.WHITE) {
+			imageName += "white";
+		} else { 
+			imageName += "black";
 		}
 		imageName += piece.type();
 		
 		//Determines piece type
-		switch (imageName){
-		case "b_Rook":	icon = b_Rook;
+		switch (imageName) {
+		case "blackRook":	icon = blackRook;
 			  			break;
-		case "b_Knight":icon = b_Knight;
+		case "blackKnight":icon = blackKnight;
 						break;
-		case "b_Bishop":icon = b_Bish;
+		case "blackBishop":icon = blackBishop;
 						break;
-		case "b_Queen":	icon = b_Queen;
+		case "blackQueen":	icon = blackQueen;
 						break;
-		case "b_King":	icon = b_King;
+		case "blackKing":	icon = blackKing;
 						break;
-		case "b_Pawn":	icon = b_Pawn;
+		case "blackPawn":	icon = blackPawn;
 						break;
-		case "w_Rook":	icon = w_Rook;
+		case "whiteRook":	icon = whiteRook;
 						break;
-		case "w_Knight":icon = w_Knight;
+		case "whiteKnight":icon = whiteKnight;
 						break;
-		case "w_Bishop":icon = w_Bish;
+		case "whiteBishop":icon = whiteBishop;
 						break;
-		case "w_Queen":	icon = w_Queen;
+		case "whiteQueen":	icon = whiteQueen;
 						break;
-		case "w_King":	icon = w_King;
+		case "whiteKing":	icon = whiteKing;
 						break;
-		case "w_Pawn":	icon = w_Pawn;
+		case "whitePawn":	icon = whitePawn;
 						break;
 		default:		icon = null;
 						break;
@@ -189,9 +246,10 @@ public class OurGUI implements ActionListener {
 	}
 	
 	/************************************************************
-	 * Main Method to initialize GUI
+	 * Main Method to initialize GUI.
+	 * @param args main arguments
 	 ************************************************************/
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		new OurGUI();
 	}
 	
@@ -210,8 +268,8 @@ public class OurGUI implements ActionListener {
 			game.move(move);
 			
 			//Move the icon to square
-			chessBoard[toR][toC].setIcon
-    				(chessBoard[fromR][fromC].getIcon());
+			chessBoard[toR][toC].setIcon(
+								chessBoard[fromR][fromC].getIcon());
 			chessBoard[fromR][fromC].setIcon(null);
 			
 		} catch (IllegalArgumentException e) {
@@ -226,7 +284,7 @@ public class OurGUI implements ActionListener {
      * @param name Name of the file.
      * @return the requested image.
      ****************************************************************/
-    public static ImageIcon loadIcon(String name) {
+    public static ImageIcon loadIcon(final String name) {
     	java.net.URL imgURL = OurGUI.class.getResource(name);
     	if (imgURL == null) {
     		throw new RuntimeException("Icon resource not found.");
@@ -242,7 +300,7 @@ public class OurGUI implements ActionListener {
     
     
     /***************************************************************
-     * Set Up Menus
+     * Set Up Menus.
      ***************************************************************/
     private void menuSetup() {
     	//Create menu and menu items
@@ -264,7 +322,7 @@ public class OurGUI implements ActionListener {
     
     private class ButtonListener implements ActionListener {
     	public void actionPerformed(ActionEvent e) {
-    		if(e.getSource() == quit) {
+    		if (e.getSource() == quit) {
 				System.exit(0);
 			}
 			
@@ -308,11 +366,11 @@ public class OurGUI implements ActionListener {
                         
                         movePiece(firstR, firstC, secondR, secondC);
                         if (game.inCheck()) {
-            				if(game.isComplete()){
+            				if (game.isComplete()) {
             					JOptionPane.showMessageDialog(
             							null, "Game Over!");
             					System.exit(0);
-            				}else{
+            				} else {
             					JOptionPane.showMessageDialog(
             							null, "King is in Check!");
             				}
@@ -324,3 +382,4 @@ public class OurGUI implements ActionListener {
 		}
 	}
 }
+
