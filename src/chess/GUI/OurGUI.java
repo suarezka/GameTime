@@ -66,24 +66,7 @@ public class OurGUI implements ActionListener {
 	private ImageIcon blackKing;
 	private ImageIcon whiteKing;
 	
-	private static final int IMAGE_SIZE = 64;
-/**		
-	//Images for black pieces
-	private ImageIcon b_Rook = loadIcon("images\\b_rook.png"),
-			b_Knight = loadIcon("images\\b_knight.png"),
-			b_Bish = loadIcon("images\\b_bish.png"),
-			b_Queen = loadIcon("images\\b_queen.png"),
-			b_King = loadIcon("images\\b_king.png"),
-			b_Pawn = loadIcon("images\\b_pawn.png");
-	
-	//Images for white pieces
-	private ImageIcon w_Rook = loadIcon("images\\w_rook.png"),
-			w_Knight = loadIcon("images\\w_knight.png"), 
-			w_Bish = loadIcon("images\\w_bish.png"),
-			w_Queen = loadIcon("images\\w_queen.png"),
-			w_King = loadIcon("images\\w_king.png"),
-			w_Pawn = loadIcon("images\\w_pawn.png");
-*/		
+	private static final int IMAGE_SIZE = 64;		
 	
 	/************************************************************
 	 * GUI constructor.

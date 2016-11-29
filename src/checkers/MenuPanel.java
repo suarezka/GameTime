@@ -1,5 +1,6 @@
 package checkers;
 
+import chess.GUI.*;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -132,7 +133,7 @@ public class MenuPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent a) {
 			if(a.getSource() == chessButton) {
-				ChessGUI.main(null);
+				OurGUI.main(null);
 				setVisible(false);
 				GameGUI.menu.setVisible(false);
 			}
