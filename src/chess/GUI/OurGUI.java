@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import chess.ChessModel;
+import gametime.GUI.GameGUI;
 import gvprojects.chess.model.IChessModel;
 import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
@@ -50,7 +51,7 @@ public class OurGUI implements ActionListener {
 	private JMenu options;
 	
 	/** JMenuItem value. */
-	private JMenuItem newGame, quit;
+	private JMenuItem newGame, quit, mainMenu;
 	
 	/** JButton value. */
 	private JButton[][] chessBoard;
@@ -383,12 +384,15 @@ public class OurGUI implements ActionListener {
     	options = new JMenu("Options");
     	newGame = new JMenuItem("New Game");
     	quit = new JMenuItem("Quit");
+	mainMenu = new JMenuItem("Main Menu");
     	
     	newGame.addActionListener(bl);
     	quit.addActionListener(bl);
+	mainMenu.addActionListener(bl);
     	
     	options.add(newGame);
     	options.add(quit);
+	options.add(mainMenu);
     	
     	menus = new JMenuBar();
     	menus.add(options);
@@ -407,12 +411,17 @@ public class OurGUI implements ActionListener {
     	 **************************/
     	public void actionPerformed(final ActionEvent e) {
     		if (e.getSource() == quit) {
-				System.exit(0);
-			}
+			System.exit(0);
+		}
 			
-			if (e.getSource() == newGame) {
-				setBoard(chessBoard);
-			}
+		if (e.getSource() == newGame) {
+			setBoard(chessBoard);
+		}
+		if (e.getSource() == mainMenu) {
+			panel.setVisible(false);
+			frame.setVisible(false);
+			GameGUI.main(null);
+		}
     	}
     }
     
