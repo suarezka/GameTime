@@ -9,7 +9,7 @@ package checkers;
 public class Move {
 	
 	/** start and end position of piece. */
-	private static int fromRow, fromColumn, toRow, toColumn;
+	public static int fromRow, fromColumn, toRow, toColumn;
 	
 
 	/*********************************************************
