@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import chess.ChessModel;
+import gametime.GUI.GameGUI;
 import gvprojects.chess.model.IChessModel;
 import gvprojects.chess.model.IChessPiece;
 import gvprojects.chess.model.Move;
