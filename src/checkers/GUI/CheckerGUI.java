@@ -1,4 +1,4 @@
-package checkers;
+package checkers.GUI;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;

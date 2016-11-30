@@ -1,4 +1,4 @@
-package checkers;
+package gametime.GUI;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;

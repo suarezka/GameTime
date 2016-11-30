@@ -1,4 +1,4 @@
-package checkers;
+package checkers.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,6 +19,12 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import checkers.CheckerModel;
+import checkers.Move;
+import checkers.Player;
+import gametime.GUI.GameGUI;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

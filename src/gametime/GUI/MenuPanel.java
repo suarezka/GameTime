@@ -1,7 +1,11 @@
-package checkers;
+package gametime.GUI;
 
 import chess.GUI.OurGUI;
+
 import javax.swing.JPanel;
+
+import checkers.GUI.CheckerGUI;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
