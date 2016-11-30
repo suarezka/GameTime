@@ -485,6 +485,7 @@ public class OurGUI implements ActionListener {
                         firstC = m;
                         status.setText(String.format("Move from (%d,%d) to?",
                                 firstR, firstC));
+			highlight(k, m, game.pieceAt(k, m));
                         
 					//Second button selected (to location)
 					} else {
@@ -494,6 +495,7 @@ public class OurGUI implements ActionListener {
                                 firstR, firstC, secondR, secondC));
                         
                         movePiece(firstR, firstC, secondR, secondC);
+			removeHighlight();
                         if (game.inCheck()) {
             				if (game.isComplete()) {
             					JOptionPane.showMessageDialog(
