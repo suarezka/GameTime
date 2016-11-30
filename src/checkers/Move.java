@@ -35,6 +35,14 @@ public class Move {
 		return fromRow;
 	}
 	
+	/********************************
+	 * Sets the current row.
+	 * @param row new current row
+	 ********************************/
+	public final void setCurrentRow(final int row) {
+		fromRow = row;
+	}
+	
 	
 	/******************************
 	 * Returns the current column.
@@ -42,6 +50,14 @@ public class Move {
 	 ******************************/
 	public final int getCurrentCol() {
 		return fromColumn;
+	}
+	
+	/********************************
+	 * Sets the current column.
+	 * @param col new current column
+	 ********************************/
+	public final void setCurrentCol(final int col) {
+		fromColumn = col;
 	}
 	
 	
@@ -53,6 +69,14 @@ public class Move {
 		return toRow;
 	}
 	
+	/********************************
+	 * Sets the new row.
+	 * @param row new row
+	 ********************************/
+	public final void setNewRow(final int row) {
+		toRow = row;
+	}
+	
 	/****************************
 	 * Returns the new column.
 	 * @return toColumn
@@ -60,5 +84,15 @@ public class Move {
 	public final int getNewCol() {
 		return toColumn;
 	}
+	
+	/********************************
+	 * Sets the new column.
+	 * @param col new current col
+	 ********************************/
+	public final void setNewCol(final int col) {
+		toColumn = col;
+	}
+	
+	
 }
 

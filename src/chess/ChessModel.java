@@ -144,8 +144,8 @@ public class ChessModel implements IChessModel {
 		}
 
 		//Possible king moves
-		int[] MOVE_R = {-1, -1, 0, 1, 1, 1, 0, -1};
-		int[] MOVE_C = {0, 1, 1, 1, 0, -1, -1, -1};
+		int[] moveR = {-1, -1, 0, 1, 1, 1, 0, -1};
+		int[] moveC = {0, 1, 1, 1, 0, -1, -1, -1};
 
 		//Checks if black king is in check
 		if (attackMovesB.size() == 1) {
@@ -153,11 +153,11 @@ public class ChessModel implements IChessModel {
 			int kingC = attackMovesB.get(0).toColumn;
 
 			//Checks if king can escape
-			for (int k = 0; k < MOVE_R.length; k++) {
+			for (int k = 0; k < moveR.length; k++) {
 
 				King piece = ((King) board[kingR][kingC]);
-				int row = MOVE_R[k] + kingR;
-				int col = MOVE_C[k] + kingC;
+				int row = moveR[k] + kingR;
+				int col = moveC[k] + kingC;
 
 				//Checks if king can safely move away
 				if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 
@@ -200,11 +200,11 @@ public class ChessModel implements IChessModel {
 
 
 			//Loops through possible king escapes
-			for (int k = 0; k < MOVE_R.length; k++) {
+			for (int k = 0; k < moveR.length; k++) {
 
 				King piece = ((King) board[kingR][kingC]);
-				int row = MOVE_R[k] + kingR;
-				int col = MOVE_C[k] + kingC;
+				int row = moveR[k] + kingR;
+				int col = moveC[k] + kingC;
 
 				//Checks if move is valid and if it will take king out of check
 				if (piece.isValidMove(new Move(kingR, kingC, row, col), board) 

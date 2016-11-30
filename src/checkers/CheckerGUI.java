@@ -12,7 +12,15 @@ import javax.swing.JFrame;
 public class CheckerGUI {
 	
 	/** JFrame for Checker GUI. */
-	public static JFrame frame;
+	private static JFrame frame;
+	
+	/*********************************
+	 * Returns JFrame for Checker GUI.
+	 * @return frame 
+	 *********************************/
+	public static final JFrame getJFrame() {
+		return frame;
+	}
 	
 	/***************************************
 	 * Main for creating checker GUI.
@@ -25,7 +33,7 @@ public class CheckerGUI {
 		CheckerPanel panel = new CheckerPanel();
 		frame.getContentPane().add(panel, BorderLayout.EAST);
 		frame.setAlwaysOnTop(true);
-		frame.setJMenuBar(panel.topMenu);
+		frame.setJMenuBar(panel.getJMenuBar());
 		frame.pack();
 		frame.setVisible(true);
 		

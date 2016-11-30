@@ -59,13 +59,13 @@ public class King extends ChessPiece {
 		int toR = move.toRow;
 
 		//Coordinates for possible moves by a king object
-		final int[] MOVE_ROW = {-1, -1, 0, 1, 1, 1, 0, -1};
-		final int[] MOVE_COL = {0, 1, 1, 1, 0, -1, -1, -1};
+		final int[] moveR = {-1, -1, 0, 1, 1, 1, 0, -1};
+		final int[] moveC = {0, 1, 1, 1, 0, -1, -1, -1};
 		
 		//Looping through surrounding area around to destination
-		for (int m = 0; m < MOVE_ROW.length; m++) {
-			int row = toR + MOVE_ROW[m]; 
-			int col = toC + MOVE_COL[m];
+		for (int m = 0; m < moveR.length; m++) {
+			int row = toR + moveR[m]; 
+			int col = toC + moveC[m];
 			
 			//Avoiding index out of bounds
 			if (row >= board.length || col >= board[0].length 
@@ -90,8 +90,8 @@ public class King extends ChessPiece {
 
 		//Checks only possible moves for match with desired move
 		//Returns true if all previous conditions met as well as this
-		for (int k = 0; k < MOVE_ROW.length; k++) {
-			if (fromR + MOVE_ROW[k] == toR && fromC + MOVE_COL[k] == toC) {
+		for (int k = 0; k < moveR.length; k++) {
+			if (fromR + moveR[k] == toR && fromC + moveC[k] == toC) {
 				return true;
 			}
 		}

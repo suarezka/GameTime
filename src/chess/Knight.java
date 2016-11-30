@@ -53,12 +53,12 @@ public class Knight extends ChessPiece {
 		
 		//Setting up arrays of valid moves for a knight to make
 		//Arrays hold coordinates of valid moves for a knight
-		final int[] COLS = {1, 2, 2, 1, -1, -2, -2, -1};
-		final int[] ROWS = {-2, -1, 1, 2, 2, 1, -1, -2};
+		final int[] cols = {1, 2, 2, 1, -1, -2, -2, -1};
+		final int[] rows = {-2, -1, 1, 2, 2, 1, -1, -2};
 		
 		//Looping through coordinates to see if moves match valid coordinates
-		for (int k = 0; k < COLS.length; k++) {
-			if (toC == COLS[k] + fromC && toR == ROWS[k] + fromR) {
+		for (int k = 0; k < cols.length; k++) {
+			if (toC == cols[k] + fromC && toR == rows[k] + fromR) {
 				return true;
 			}
 		}

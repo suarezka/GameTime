@@ -14,7 +14,7 @@ public class CheckerModel implements ICheckerModel {
 	private IGamePiece[][] board; 
 
 	/** current piece. */
-	public IGamePiece currentPiece;
+	private IGamePiece currentPiece;
 
 	/** player value. */
 	private Player player;
@@ -270,13 +270,13 @@ public class CheckerModel implements ICheckerModel {
 	 **************************************************/
 	public final void createPiece(final int row, final int column, 
 								final boolean isKing, final boolean isRed) {
-		if (isKing == true && isRed == true) {
+		if (isKing && isRed) {
 			board[row][column] = new Kings(Player.RED);
 			
-		} else if (isKing == true && isRed == false) {
+		} else if (isKing && !isRed) {
 			board[row][column] = new Kings(Player.GRAY);
 			
-		} else if (isKing == false && isRed == true) {
+		} else if (!isKing && isRed) {
 			board[row][column] = new NormalPiece(Player.RED);
 			
 		} else {

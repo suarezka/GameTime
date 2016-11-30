@@ -51,12 +51,12 @@ public class Pawn extends ChessPiece {
 		int toC = move.toColumn;
 		int toR = move.toRow;
 		
-		final int WHITE_START = 6;
-		final int BLACK_START = 1;
+		final int whiteStart = 6;
+		final int blackStart = 1;
 			
 		//Checking if is starting from colors starting row
-		if ((fromR == WHITE_START && player() == Player.WHITE) 
-				|| (fromR == BLACK_START && player() == Player.BLACK)) {
+		if ((fromR == whiteStart && player() == Player.WHITE) 
+				|| (fromR == blackStart && player() == Player.BLACK)) {
 			
 			//Seeing if move is bigger than two squares
 			if (Math.abs(fromR - toR) > 2) {

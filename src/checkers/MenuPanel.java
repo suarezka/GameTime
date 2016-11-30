@@ -36,8 +36,15 @@ public class MenuPanel extends JPanel {
 	private Image checkerLogo, chessLogo, settingsLogo;
 	
 	/** Image Icons. */
-	private ImageIcon CRL, CL, settings;
+	private ImageIcon crl, cl, settings;
 	//private ImageIcon bg;
+	
+	/** Chess logo size. */
+	public static final int CHESS_LOGO = 125;
+	
+	/** Checker logo size. */
+	public static final int CHECK_LOGO = 125;
+	
 	
 	/***************************************
 	 * Construct Panel for Main GUI.
@@ -68,7 +75,7 @@ public class MenuPanel extends JPanel {
 		settingsButton.setBounds(50, 200, 50, 50);
 		//p.add(settingsButton);
 		
-		chessButton = new JButton(CL);
+		chessButton = new JButton(cl);
 		chessButton.setBackground(Color.WHITE);
 		chessButton.setBounds(70, 100, 200, 150);
 		p.add(chessButton);
@@ -80,7 +87,7 @@ public class MenuPanel extends JPanel {
 		//chess.setLocation(25, 25);
 		p.add(chess);
 		
-		checkerButton = new JButton(CRL);
+		checkerButton = new JButton(crl);
 		checkerButton.setBackground(Color.WHITE);
 		checkerButton.setBounds(420, 100, 200, 150);
 		p.add(checkerButton);
@@ -110,13 +117,15 @@ public class MenuPanel extends JPanel {
 			
 			chessLogo = ImageIO.read(
 					getClass().getResource("/Pictures/blackPawn.png"));
-			Image a = chessLogo.getScaledInstance(125, 125, 125);
-			CL = new ImageIcon(a);
+			Image a = chessLogo.getScaledInstance(
+									CHESS_LOGO, CHESS_LOGO, CHESS_LOGO);
+			cl = new ImageIcon(a);
 			
 			checkerLogo = ImageIO.read(
 				getClass().getResource("/Pictures/beer-cap-icon-67249.png"));
-			Image b = checkerLogo.getScaledInstance(150, 150, 150);
-			CRL = new ImageIcon(b);
+			Image b = checkerLogo.getScaledInstance(
+									CHECK_LOGO, CHECK_LOGO, CHECK_LOGO);
+			crl = new ImageIcon(b);
 			
 //			settingsLogo = ImageIO.read(
 //				getClass().getResource("/Pictures/settings.png"));
@@ -140,12 +149,12 @@ public class MenuPanel extends JPanel {
 			if (a.getSource() == chessButton) {
 				OurGUI.main(null);
 				setVisible(false);
-				GameGUI.menu.setVisible(false);
+				GameGUI.getJFrame().setVisible(false);
 			}
 			if (a.getSource() == checkerButton) {
 				CheckerGUI.main(null);
 				setVisible(false);
-				GameGUI.menu.setVisible(false);
+				GameGUI.getJFrame().setVisible(false);
 			}
 		}
 

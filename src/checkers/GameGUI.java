@@ -13,7 +13,15 @@ import javax.swing.JFrame;
 public class GameGUI {
 	
 	/** JFrame menu value. */
-	public static JFrame menu;
+	private static JFrame menu;
+
+	/*********************************
+	 * Returns JFrame for Game Menu.
+	 * @return menu 
+	 *********************************/
+	public static final JFrame getJFrame() {
+		return menu;
+	}
 	
 	/*********************************
 	 * Main method to run GUI.

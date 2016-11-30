@@ -38,11 +38,10 @@ import javax.swing.JMenuItem;
 public class CheckerPanel extends JPanel {
 	
 	/** JMenuBar value. */
-	public static JMenuBar topMenu;
+	private static JMenuBar topMenu;
 	
 	/** JMenuItems. */
 	private JMenuItem newGame, quitGame, mainMenu, save, load;
-
 	
 	/** board: array of buttons for board tiles. */
 	private JButton[][] board;
@@ -51,7 +50,7 @@ public class CheckerPanel extends JPanel {
 	private CheckerModel model;
 	
 	/** currentMove: holds value for the current move. */
-	public Move currentMove;
+	private Move currentMove;
 	
 	/** JPanel next to board. */
 	private JPanel rightSide;
@@ -59,41 +58,17 @@ public class CheckerPanel extends JPanel {
 	/** JLabel to show current player. */
 	private JLabel currentPlayer;
 	
-	/** image for redPieces. */
-	private Image redPieces;
+	/** image for redPieces and grayPieces. */
+	private Image redPieces, grayPieces;
 	
-	/** image for grayPieces. */
-	private Image grayPieces;
+	/** images and resized images. */
+	private Image redKings, grayKings, 
+					redKingsResized, grayKingsResized, 
+					redPieceResize, grayPieceResize;
 	
-	/** image for redKings. */
-	private Image redKings;
-	
-	/** image for grayKings. */
-	private Image grayKings;
-	
-	/** resized image redKings. */
-	private Image redKingsResized;
-	
-	/** resized image grayKings. */
-	private Image grayKingsResized;
-	
-	/** resized image redPiece. */
-	private Image redPieceResize;
-	
-	/** resized image grayPieceResize. */
-	private Image grayPieceResize;
-	
-	/** red piece icon. */
-	private ImageIcon rPieces;
-	
-	/** gray piece icon. */
-	private ImageIcon gPieces;
-	
-	/** red king icon. */
-	private ImageIcon rKings;
-	
-	/** gray king icon. */
-	private ImageIcon gKings;
+	/** Image Icons. */
+	private ImageIcon rPieces, gPieces,
+						rKings, gKings;
 	
 	/** holds board size. */
 	private static final int BOARDSIZE = 8;
@@ -107,6 +82,22 @@ public class CheckerPanel extends JPanel {
 	/** holds resized gray piece image. */
 	private static final int GRAYSIZE = 120;
 	
+	
+	/*********************************
+	 * Returns JMenuBar for top menu.
+	 * @return topMenu
+	 *********************************/
+	public final JMenuBar getJMenuBar() {
+		return topMenu;
+	}
+	
+	/*********************************
+	 * Returns current move.
+	 * @return current move
+	 *********************************/
+	public final Move getCurrentMove() {
+		return currentMove;
+	}
 	
 	/*********************************************
 	 * CheckerPanel creates board for game play.
@@ -409,7 +400,7 @@ public class CheckerPanel extends JPanel {
 			}
 			if (a.getSource() == mainMenu) {
 				setVisible(false);
-				CheckerGUI.frame.setVisible(false);
+				CheckerGUI.getJFrame().setVisible(false);
 				GameGUI.main(null);
 			}
 			if (a.getSource() == save) {
@@ -450,8 +441,8 @@ public class CheckerPanel extends JPanel {
 												
 												model.setCurrentPiece(
 														model.pieceAt(r, c));
-												currentMove.fromRow = r;
-												currentMove.fromColumn = c;
+												currentMove.setCurrentRow(r);
+												currentMove.setCurrentCol(c);;
 											}
 										}
 									}
@@ -459,10 +450,10 @@ public class CheckerPanel extends JPanel {
 							} else {
 								
 								System.out.println(r + " " + c);
-								currentMove.toRow = r;
-								currentMove.toColumn = c;
+								currentMove.setCurrentRow(r);
+								currentMove.setCurrentCol(c);
 								model.move(currentMove);
-								model.currentPiece = null;
+								model.setCurrentPiece(null);
 								model.kingMe();
 								if (model.gameOver()) {
 									//end game
