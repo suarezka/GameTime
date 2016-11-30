@@ -399,6 +399,42 @@ public class OurGUI implements ActionListener {
     	
     	frame.setJMenuBar(menus);
     }
+	
+    /**
+     * highlights possible moves for selected piece
+     */
+    private void highlight(int r, int c, IChessPiece p) {
+    	//import chess.ChessPiece
+    	if (game.pieceAt(r, c) != null) {
+    		for(int a = 0; a < 8; a++) {
+    			for(int b = 0; b < 8; b++) {
+    	    		    Move m = new Move(r, c, a, b);
+    	    		    if(game.isValidMove(m) == true) {
+    	    			chessBoard[a][b].setBackground(Color.GREEN);
+    	    		    }
+    		        }
+    		}
+    	}
+    	else {
+    		return;
+    	}
+    }
+    
+    /**
+     * Removes highlighted path after move
+     */
+    private void removeHighlight() {
+    	for(int a = 0; a < 8; a++) {
+    		for(int b = 0; b < 8; b++) {
+    			if((a + b) % 2 == 0) {
+    				chessBoard[a][b].setBackground(new Color(120, 40, 84));
+    			}
+    			else {
+    				chessBoard[a][b].setBackground(new Color(200, 200, 50));
+    			}
+    		}
+    	}
+    }
     
     /************************************
      * Buttoner Listener.
