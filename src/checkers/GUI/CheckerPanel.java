@@ -448,7 +448,7 @@ public class CheckerPanel extends JPanel {
 												model.setCurrentPiece(
 														model.pieceAt(r, c));
 												currentMove.setCurrentRow(r);
-												currentMove.setCurrentCol(c);;
+												currentMove.setCurrentCol(c);
 											}
 										}
 									}
@@ -456,8 +456,8 @@ public class CheckerPanel extends JPanel {
 							} else {
 								
 								System.out.println(r + " " + c);
-								currentMove.setCurrentRow(r);
-								currentMove.setCurrentCol(c);
+								currentMove.setNewRow(r);
+								currentMove.setNewCol(c);
 								model.move(currentMove);
 								model.setCurrentPiece(null);
 								model.kingMe();

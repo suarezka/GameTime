@@ -40,7 +40,7 @@ public class Move {
 	 * @param row new current row
 	 ********************************/
 	public final void setCurrentRow(final int row) {
-		fromRow = row;
+		this.fromRow = row;
 	}
 	
 	
@@ -57,7 +57,7 @@ public class Move {
 	 * @param col new current column
 	 ********************************/
 	public final void setCurrentCol(final int col) {
-		fromColumn = col;
+		this.fromColumn = col;
 	}
 	
 	
@@ -74,7 +74,7 @@ public class Move {
 	 * @param row new row
 	 ********************************/
 	public final void setNewRow(final int row) {
-		toRow = row;
+		this.toRow = row;
 	}
 	
 	/****************************
@@ -90,7 +90,7 @@ public class Move {
 	 * @param col new current col
 	 ********************************/
 	public final void setNewCol(final int col) {
-		toColumn = col;
+		this.toColumn = col;
 	}
 	
 	
