@@ -400,36 +400,38 @@ public class OurGUI implements ActionListener {
     	frame.setJMenuBar(menus);
     }
 	
-    /**
-     * highlights possible moves for selected piece
-     */
-    private void highlight(int r, int c, IChessPiece p) {
+    /************************************************
+     * Highlights possible moves for selected piece.
+     * @param r row
+     * @param c column
+     * @param p IChesspiece
+     ************************************************/
+    private void highlight(final int r, final int c, final IChessPiece p) {
     	//import chess.ChessPiece
     	if (game.pieceAt(r, c) != null) {
-    		for(int a = 0; a < 8; a++) {
-    			for(int b = 0; b < 8; b++) {
+    		for (int a = 0; a < BOARD_SIZE; a++) {
+    			for (int b = 0; b < BOARD_SIZE; b++) {
     	    		    Move m = new Move(r, c, a, b);
-    	    		    if(game.isValidMove(m) == true) {
+    	    		    if (game.isValidMove(m)) {
     	    			chessBoard[a][b].setBackground(Color.GREEN);
     	    		    }
     		        }
     		}
-    	}
-    	else {
+    	} else {
     		return;
     	}
     }
     
-    /**
-     * Removes highlighted path after move
-     */
+    /****************************************
+     * Removes highlighted path after move.
+     ****************************************/
     private void removeHighlight() {
-    	for(int a = 0; a < 8; a++) {
-    		for(int b = 0; b < 8; b++) {
-    			if((a + b) % 2 == 0) {
+    	for (int a = 0; a < BOARD_SIZE; a++) {
+    		for (int b = 0; b < BOARD_SIZE; b++) {
+    			if ((a + b) % 2 == 0) {
     				chessBoard[a][b].setBackground(new Color(120, 40, 84));
-    			}
-    			else {
+    				
+    			} else {
     				chessBoard[a][b].setBackground(new Color(200, 200, 50));
     			}
     		}
@@ -485,7 +487,7 @@ public class OurGUI implements ActionListener {
                         firstC = m;
                         status.setText(String.format("Move from (%d,%d) to?",
                                 firstR, firstC));
-			highlight(k, m, game.pieceAt(k, m));
+                        highlight(k, m, game.pieceAt(k, m));
                         
 					//Second button selected (to location)
 					} else {
@@ -495,7 +497,7 @@ public class OurGUI implements ActionListener {
                                 firstR, firstC, secondR, secondC));
                         
                         movePiece(firstR, firstC, secondR, secondC);
-			removeHighlight();
+                        removeHighlight();
                         if (game.inCheck()) {
             				if (game.isComplete()) {
             					JOptionPane.showMessageDialog(

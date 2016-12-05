@@ -21,10 +21,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-/**
- * @author kaye
- *
- */
+/**********************************************************************
+ * MenuPanel class extends JPanel to create the main menu GUI.
+ * 
+ * @author Nate Benson, Kaye Suarez, Jake Young
+ * @version 2.0 
+ **********************************************************************/
 public class MenuPanel extends JPanel {
 	
 	/** JButton values. */
@@ -146,7 +148,7 @@ public class MenuPanel extends JPanel {
 	}
 	
 	/** Mouse Listener value. */
-	MouseListener listener = new MouseListener() {
+	private MouseListener listener = new MouseListener() {
 
 		@Override
 		public void mouseClicked(final MouseEvent a) {
@@ -186,5 +188,13 @@ public class MenuPanel extends JPanel {
 			
 		}
 	};
+	
+	/*******************************
+	 * Return MouseListener object.
+	 * @return listener
+	 *******************************/
+	public final MouseListener getMouseListener() {
+		return listener;
+	}
 	
 }

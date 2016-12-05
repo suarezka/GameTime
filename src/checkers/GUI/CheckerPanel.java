@@ -376,7 +376,7 @@ public class CheckerPanel extends JPanel {
 	}
 	
 	/** holds values of mouse listener. */
-	MouseListener listener = new MouseListener() {
+	private MouseListener listener = new MouseListener() {
 
 		@Override
 		public void mouseClicked(final MouseEvent a) {
@@ -472,82 +472,8 @@ public class CheckerPanel extends JPanel {
 					}
 				}
 			}
-			  if (a.getButton() == MouseEvent.BUTTON3) {
-//				Object[] options = 
-//								{"Resume", "Save", "Load", "Restart", "Quit"};
-//				
-//				int n = JOptionPane.showOptionDialog(
-//						            null, "The Game is Paused.", "Checkers",
-//						            JOptionPane.DEFAULT_OPTION, 
-//						            JOptionPane.PLAIN_MESSAGE, null, 
-//						            options, options[0]);
-//				
-//				if (n == 0) {
-//					displayBoard();
-//					
-//				} else if (n == 1) {
-//					String str = JOptionPane.showInputDialog(null, 
-//											"Enter file name:"); 
-//					saveBoard(str);
-//					displayBoard();
-//					
-//				} else if (n == 2) {
-//					openFile();
-//					displayBoard();
-//					
-//				} else if (n == 3) {
-//					reset();
-//					displayBoard();
-//					
-//				} else if (n == 4) {
-//					System.exit(0); 
-//				}
-			}
-			  
-			  
-//			if(a.getSource() == newGame) {
-//				reset();
-//				displayBoard();
-//			}
-//			if(a.getSource() == quitGame) {
-//				System.exit(0);
-//			}
-//			if(a.getSource() == mainMenu) {
-//				setVisible(false);
-//				CheckerGUI.frame.setVisible(false);
-//				GameGUI.main(null);
-//			}
-//			for(int r = 0; r < 8; r++) {
-//				for(int c = 0; c < 8; c++) {
-//					if(a.getSource() == board[r][c]) {
-//						if(a.getButton() == MouseEvent.BUTTON1) {
-//							if(model.pieceAt(r, c) != null) {
-//								if(model.pieceAt(r, c).player() 
-//			  								== model.getCurrentPlayer()) {
-//									model.setCurrentPiece(model.pieceAt(r, c));
-//									currentMove = new Move(r, c, 0, 0);
-//									currentMoverow = r;
-//									currentMove.fromColumn = c;
-//								}
-//								else if(model.pieceAt(r, c).player() 
-//			  								!= model.getCurrentPlayer()) {
-//									currentMove.toRow = r;
-//									currentMove.toColumn = c;
-//									model.move(currentMove);
-//									model.currentPiece = null;
-//									model.kingMe();
-//									displayBoard();
-//									if(model.gameOver()) {
-//										//end the game
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
 		}
-
+		
 		@Override
 		public void mouseReleased(final MouseEvent a) {
 			// TODO Auto-generated method stub
@@ -555,5 +481,13 @@ public class CheckerPanel extends JPanel {
 		}
 		
 	};
+	
+	/*******************************
+	 * Return MouseListener object.
+	 * @return listener
+	 *******************************/
+	public final MouseListener getMouseListener() {
+		return listener;
+	}
 	
 }

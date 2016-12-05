@@ -77,19 +77,15 @@ public class Pawn extends ChessPiece {
 		
 		//Capture stuff
 		if (Math.abs(fromC - toC) == 1 && Math.abs(fromR - toR) == 1) {
-			if (board[toR][toC] != null && board[toR][toC].player()
-					== player().next()) {
-				return true;
-			} else {
-				return false;
-			}
+			return board[toR][toC] != null && board[toR][toC].player()
+					== player().next();
 		}
 		
 		if (board[toR][toC] != null) {
 			return false;
 		}
 		
-		//Doesnt allow double more no row movement when attacking
+		//Doesn't allow double more no row movement when attacking
 		if (Math.abs(fromC - toC) > 0 && Math.abs(fromR - toR) != 1) {
 			return false;
 		}

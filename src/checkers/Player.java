@@ -17,9 +17,20 @@ public enum Player {
 	 *********************/
 	public Player next() {
 		if (this == GRAY || this == RED) {
-			return this == GRAY ? RED : GRAY; 
+			
+			if (this == GRAY) {
+				return RED;
+			} else {
+				return GRAY;
+			}
+
 		} else {
-			return this == BLACK ? WHITE : BLACK;
+			
+			if (this == BLACK) {
+				return WHITE;
+			} else {
+				return BLACK;
+			}
 		}
 	}
 }
