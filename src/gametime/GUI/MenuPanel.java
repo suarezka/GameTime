@@ -153,12 +153,14 @@ public class MenuPanel extends JPanel {
 		@Override
 		public void mouseClicked(final MouseEvent a) {
 			if (a.getSource() == chessButton) {
-				OurGUI.main(null);
+				String[] args = {};
+				OurGUI.main(args);
 				setVisible(false);
 				GameGUI.getJFrame().setVisible(false);
 			}
 			if (a.getSource() == checkerButton) {
-				CheckerGUI.main(null);
+				String[] args = {};
+				CheckerGUI.main(args);
 				setVisible(false);
 				GameGUI.getJFrame().setVisible(false);
 			}
