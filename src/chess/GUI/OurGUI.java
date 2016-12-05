@@ -458,7 +458,8 @@ public class OurGUI implements ActionListener {
 		if (e.getSource() == mainMenu) {
 			panel.setVisible(false);
 			frame.setVisible(false);
-			GameGUI.main(null);
+			String[] args = {};
+			GameGUI.main(args);
 		}
     	}
     }
