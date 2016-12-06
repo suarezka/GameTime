@@ -44,7 +44,7 @@ import javax.swing.JMenuItem;
 public class CheckerPanel extends JPanel {
 	
 	/** JMenuBar value. */
-	private static JMenuBar topMenu;
+	private JMenuBar topMenu;
 	
 	/** JMenuItems. */
 	private JMenuItem newGame, quitGame, mainMenu, save, load;
@@ -407,7 +407,8 @@ public class CheckerPanel extends JPanel {
 			if (a.getSource() == mainMenu) {
 				setVisible(false);
 				CheckerGUI.getJFrame().setVisible(false);
-				GameGUI.main(null);
+				String[] args = {};
+				GameGUI.main(args);
 			}
 			if (a.getSource() == save) {
 				String str = JOptionPane.showInputDialog(null, 

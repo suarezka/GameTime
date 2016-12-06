@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 public class MenuPanel extends JPanel {
 	
 	/** JButton values. */
-	private JButton checkerButton, chessButton, settingsButton, quit;
+	private JButton checkerButton, chessButton, quit;
 	
 	/** JLabel checker value. */
 	private JLabel checkers, chess, title, menu;
@@ -75,11 +75,6 @@ public class MenuPanel extends JPanel {
 		p.setPreferredSize(new Dimension(700, 250));
 		p.setLayout(null);
 		add(p);
-		
-		settingsButton = new JButton(settings);
-		settingsButton.setBackground(Color.BLUE);
-		settingsButton.setBounds(50, 200, 50, 50);
-		//p.add(settingsButton);
 		
 		chessButton = new JButton(cl);
 		chessButton.setBackground(Color.WHITE);
@@ -153,12 +148,14 @@ public class MenuPanel extends JPanel {
 		@Override
 		public void mouseClicked(final MouseEvent a) {
 			if (a.getSource() == chessButton) {
-				OurGUI.main(null);
+				String[] args = {};
+				OurGUI.main(args);
 				setVisible(false);
 				GameGUI.getJFrame().setVisible(false);
 			}
 			if (a.getSource() == checkerButton) {
-				CheckerGUI.main(null);
+				String[] args = {};
+				CheckerGUI.main(args);
 				setVisible(false);
 				GameGUI.getJFrame().setVisible(false);
 			}
