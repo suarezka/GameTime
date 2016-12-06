@@ -18,7 +18,7 @@ public class CheckerModel implements ICheckerModel {
 
 	/** player value. */
 	private Player player;
-
+	
 	/** total number of red pieces. */
 	private int redTotal = 12;
 
@@ -302,13 +302,4 @@ public class CheckerModel implements ICheckerModel {
 			}
 		}
 	}	
-	
-	/**
-	 * 
-	 * @param p a.
-	 */
-	public void enterLottery(final Player p) {
-		
-	}
-	
 }
