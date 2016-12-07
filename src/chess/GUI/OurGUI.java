@@ -7,11 +7,20 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -51,7 +60,7 @@ public class OurGUI implements ActionListener {
 	private JMenu options;
 	
 	/** JMenuItem value. */
-	private JMenuItem newGame, quit, mainMenu;
+	private JMenuItem newGame, saveGame, loadGame, quit, mainMenu;
 	
 	/** JButton value. */
 	private JButton[][] chessBoard;
@@ -383,16 +392,22 @@ public class OurGUI implements ActionListener {
     	//Create menu and menu items
     	options = new JMenu("Options");
     	newGame = new JMenuItem("New Game");
+    	loadGame = new JMenuItem("Load Game");
+    	saveGame = new JMenuItem("Save Game");
     	quit = new JMenuItem("Quit");
-	mainMenu = new JMenuItem("Main Menu");
+    	mainMenu = new JMenuItem("Main Menu");
     	
     	newGame.addActionListener(bl);
+    	loadGame.addActionListener(bl);
+    	saveGame.addActionListener(bl);
     	quit.addActionListener(bl);
-	mainMenu.addActionListener(bl);
+    	mainMenu.addActionListener(bl);
     	
     	options.add(newGame);
+    	options.add(loadGame);
+    	options.add(saveGame);
     	options.add(quit);
-	options.add(mainMenu);
+    	options.add(mainMenu);
     	
     	menus = new JMenuBar();
     	menus.add(options);
@@ -438,7 +453,142 @@ public class OurGUI implements ActionListener {
     	}
     }
     
+    /***************************
+	 * Clears the current board.
+	 ***************************/
+    public final void clearBoard() {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				if (game.pieceAt(i, j) != null) {
+					((ChessModel) game).removePiece(i, j);
+				}
+			}
+		}
+	}
+    
+    /*****************************************
+	 * Save the current board to text file.
+	 * @param filename file for saving board
+	 *****************************************/
+    private final void saveBoard(final String filename) {
+    	try {
+			File file = new File(filename);
+			Writer w = new OutputStreamWriter(
+						new FileOutputStream(file), "UTF-8");
+			PrintWriter out = new PrintWriter(w);
+		 
+			for (int i = 0; i < BOARD_SIZE; i++) {
+				for (int j = 0; j < BOARD_SIZE; j++) {
+					if (game.pieceAt(i, j) == null) { 
+						out.print("X,");
+						
+					} else if (game.pieceAt(i, j).type().equals("Pawn")) {
+						
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("PB,");
+						} else {
+							out.print("PW,");
+						}
+					} else if (game.pieceAt(i, j).type().equals("Rook")) {
+						
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("RB,");
+							
+						} else {
+							out.print("RW,");
+						}
+					} else if (game.pieceAt(i, j).type().equals("Knight")) {
+					
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("KnB,");
+						
+						} else {
+							out.print("KnW,");
+						}
+					} else if (game.pieceAt(i, j).type().equals("Bishop")) {
+						
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("BB,");
+							
+						} else {
+							out.print("BW,");
+						}
+					} else if (game.pieceAt(i, j).type().equals("Queen")) {
+						
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("QB,");
+							
+						} else {
+							out.print("QW,");
+						}
+					} else {
+						
+						if (game.pieceAt(i, j).player() == Player.BLACK) {
+							out.print("KB,");
+							
+						} else {
+							out.print("KW,");
+						}
+					}
+				}
+			}
+			out.close();
+		} catch (IOException error1) {
+			System.out.println("Failed to save file");
+		}
+    }
+    
     /************************************
+	 * Load board from text file.
+	 * @param filename file to load from
+	 ************************************/
+    public final void readBoard(final String filename) {
+		FileInputStream fileByteStream = null;
+		Scanner inFS = null;
+	
+		try {
+			// Input a filename and scan the file using commas as delimiter
+			fileByteStream = new FileInputStream(filename);
+			inFS = new Scanner(fileByteStream, "UTF-8");
+			inFS.useDelimiter("[,\r\n]+");
+			
+			// Read the board to ArrayList
+			while (inFS.hasNext()) {
+				clearBoard();
+				for (int i = 0; i < BOARD_SIZE; i++) { 
+					for (int j = 0; j < BOARD_SIZE; j++) {
+						String spot = inFS.next();
+						
+						((ChessModel) game).createPiece(i, j, spot);
+					}
+				}	
+			}
+			fileByteStream.close();
+		} catch (FileNotFoundException error1) {
+			System.out.println("Failed to open file: " + filename);
+		} catch (IOException error2) {
+			System.out.println("Oops! There was an error reading " + filename);
+		}
+	}
+    
+    /**********************
+	 * Open the text file.
+	 **********************/
+	private void openFile() {
+		String userDir = System.getProperty("user.dir");
+		JFileChooser fc = new JFileChooser(userDir);
+		
+		// Show File Chooser and wait for user selection
+		int returnVal = fc.showOpenDialog(frame);
+		
+		// Did the user select a file?
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			String filename = fc.getSelectedFile().getName();
+			readBoard(filename);          
+		}
+	}
+	
+	/************************************
      * Buttoner Listener.
      ************************************/
     private class ButtonListener implements ActionListener {
@@ -449,18 +599,24 @@ public class OurGUI implements ActionListener {
     	 **************************/
     	public void actionPerformed(final ActionEvent e) {
     		if (e.getSource() == quit) {
-			System.exit(0);
-		}
+				System.exit(0);
+			}
 			
-		if (e.getSource() == newGame) {
-			setBoard(chessBoard);
-		}
-		if (e.getSource() == mainMenu) {
-			panel.setVisible(false);
-			frame.setVisible(false);
-			String[] args = {};
-			GameGUI.main(args);
-		}
+			if (e.getSource() == newGame) {
+				setBoard(chessBoard);
+			}
+			
+			if (e.getSource() == loadGame) {
+				openFile();
+			}
+			
+			if (e.getSource() == saveGame) {
+				String str = JOptionPane.showInputDialog(null, 
+						"Enter file name:"); 
+				if (str != null) {
+					saveBoard(str);
+				}
+			}
     	}
     }
     

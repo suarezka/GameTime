@@ -384,5 +384,48 @@ public class ChessModel implements IChessModel {
 	public final IChessPiece pieceAt(final int row, final int col) {
 		return board[row][col];
 	}
-
+	
+	/********************************
+	 * Removes piece from the board.
+	 * @param row current row
+	 * @param column current column
+	 ********************************/
+	public final void removePiece(final int row, final int column) {
+		 board[row][column] = null;
+	}
+	
+	/**************************************************
+	 * Creates a Piece at given location.
+	 * @param row current row
+	 * @param column current column
+	 * @param type reads piece type
+	 **************************************************/
+	public final void createPiece(final int row, final int column, final String type) {
+		if(type.equals("PW"))
+			board[row][column] = new Pawn(Player.WHITE);
+		else if(type.equals("RW"))
+			board[row][column] = new Rook(Player.WHITE);
+		else if(type.equals("KnW"))
+			board[row][column] = new Knight(Player.WHITE);
+		else if(type.equals("BW"))
+			board[row][column] = new Bishop(Player.WHITE);
+		else if(type.equals("QW"))
+			board[row][column] = new Queen(Player.WHITE);
+		else if(type.equals("KW"))
+			board[row][column] = new King(Player.WHITE);
+		else if(type.equals("PB"))
+			board[row][column] = new Pawn(Player.BLACK);
+		else if(type.equals("RB"))
+			board[row][column] = new Rook(Player.BLACK);
+		else if(type.equals("KnB"))
+			board[row][column] = new Knight(Player.BLACK);
+		else if(type.equals("BB"))
+			board[row][column] = new Bishop(Player.BLACK);
+		else if(type.equals("QB"))
+			board[row][column] = new Queen(Player.BLACK);
+		else if(type.equals("KB"))
+			board[row][column] = new King(Player.BLACK);
+		else 
+			board[row][column] = null;
+	}
 }
